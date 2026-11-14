@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainRotaciones"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F5F0"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- Encabezado: TERRA / ROTACIONES -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.06"
+                android:text="TERRA / ROTACIONES"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Tu próximo ciclo"
+                android:textColor="#171715"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Comparativa: Tu rotación y 2 alternativas"
+                android:textColor="#7A766E"
+                android:textSize="13sp" />
+
+            <!-- Fila de Tarjetas Ambientales (SMAP y NASA POWER) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Tarjeta SMAP -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardSmap"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#E2DFD7"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="12dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_water_drop"
+                            app:tint="#171715" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:letterSpacing="0.05"
+                                android:text="SMAP"
+                                android:textColor="#7A766E"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvSmapHumedad"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp"
+                                android:text="Humedad: Baja"
+                                android:textColor="#171715"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Tarjeta NASA POWER -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardNasaPower"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#E2DFD7"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="12dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_sun"
+                            app:tint="#171715" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:letterSpacing="0.05"
+                                android:text="NASA POWER"
+                                android:textColor="#7A766E"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvNasaClima"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp"
+                                android:text="Clima: Seco/Cálido"
+                                android:textColor="#171715"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Título de Sección -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="14dp"
+                android:text="Tu rotación y 2 alternativas"
+                android:textColor="#171715"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- TARJETA 1: TU ROTACIÓN ACTUAL -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRotacionActual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#EDEAE2"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E2DFD7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.06"
+                        android:text="TU ROTACIÓN ACTUAL"
+                        android:textColor="#7A766E"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTituloActual"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="Papa → Maíz"
+                        android:textColor="#171715"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <!-- Fila 1: Por qué se sugiere -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Por qué se sugiere"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvPorqueActual"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Punto de partida para comparar."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 2: Beneficio -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Beneficio"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvBeneficioActual"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Mantiene cultivos y equipos conocidos."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 3: Riesgo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Riesgo"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvRiesgoActual"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sin leguminosa; vigilar agua y suelo."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 4: Evidencia NASA -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Evidencia NASA"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvEvidenciaActual"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 5: Datos faltantes -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Datos faltantes"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDatosFaltantesActual"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- TARJETA 2: ALTERNATIVA 1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAlternativa1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E2DFD7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.06"
+                            android:text="ALTERNATIVA 1"
+                            android:textColor="#7A766E"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/btnVerDetalle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingStart="6dp"
+                            android:paddingBottom="2dp"
+                            android:text="Ver detalle ↗"
+                            android:textColor="#171715"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tvTituloAlt1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="Papa → Maíz → Frijol"
+                        android:textColor="#171715"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <!-- Fila 1: Por qué se sugiere -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Por qué se sugiere"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvPorqueAlt1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Añade una leguminosa al ciclo."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 2: Beneficio -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Beneficio"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvBeneficioAlt1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Aporta nitrógeno y ahorra agua."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 3: Riesgo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Riesgo"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvRiesgoAlt1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sensible a heladas. Validar fechas."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 4: Evidencia NASA -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Evidencia NASA"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvEvidenciaAlt1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 5: Datos faltantes -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Datos faltantes"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDatosFaltantesAlt1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- TARJETA 3: ALTERNATIVA 2 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAlternativa2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E2DFD7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.06"
+                            android:text="ALTERNATIVA 2"
+                            android:textColor="#7A766E"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/btnVerDetalle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingStart="6dp"
+                            android:paddingBottom="2dp"
+                            android:text="Ver detalle ↗"
+                            android:textColor="#171715"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tvTituloAlt2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="Papa → Avena → Arveja"
+                        android:textColor="#171715"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <!-- Fila 1: Por qué se sugiere -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Por qué se sugiere"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvPorqueAlt2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Combina un cereal y una leguminosa."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 2: Beneficio -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Beneficio"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvBeneficioAlt2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Protege el suelo y retiene humedad."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 3: Riesgo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Riesgo"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvRiesgoAlt2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Revisar mercado y ajuste de equipos."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 4: Evidencia NASA -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Evidencia NASA"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvEvidenciaAlt2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 5: Datos faltantes -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Datos faltantes"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDatosFaltantesAlt2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Nota de pie / Disclaimer -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="18dp"
+                android:lineSpacingExtra="2dp"
+                android:text="Datos de ejemplo · Las señales NASA orientan; valida la decisión con información local."
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Línea divisoria superior de la barra de navegación -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E2DFD7" />
+
+    <!-- Barra de navegación inferior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#F7F5F0"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/navInicio"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_home"
+                app:tint="#7A766E" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Inicio"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navRotaciones"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_chart"
+                app:tint="#171715" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Rotaciones"
+                android:textColor="#171715"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navMiFinca"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_user"
+                app:tint="#7A766E" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Mi finca"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
