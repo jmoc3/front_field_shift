@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FieldShift">
 
-        <!-- Pantalla de Inicio principal -->
+        <!-- Pantalla de Acceso y Registro configurada como principal -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -22,6 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Pantalla de Inicio principal -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Pantalla de Mi Finca -->
         <activity

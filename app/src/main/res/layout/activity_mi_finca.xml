@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainMiFinca"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F5F0"
-    android:orientation="vertical">
+    android:importantForAutofill="noExcludeDescendants"
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -83,7 +86,8 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:hint="Ej: Tunja, Boyacá"
-                    android:inputType="textCapWords"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapWords|textNoSuggestions"
                     android:paddingHorizontal="16dp"
                     android:text="Tunja, Boyacá"
                     android:textColor="#171715"
@@ -123,6 +127,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:hint="12"
+                        android:importantForAutofill="no"
                         android:inputType="number"
                         android:text="12"
                         android:textColor="#171715"
