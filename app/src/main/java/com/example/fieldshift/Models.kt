@@ -32,10 +32,20 @@ data class OpcionRotacion(
     val cultivos: List<String>,
     val puntaje: Double,
     val porque: String,
-    val evidencia: List<EvidenciaItem>,
-    val beneficios: List<String>,
-    val riesgos: List<String>,
-    val vacios: List<String>
+    val evidencia: List<EvidenciaItem> = emptyList(),
+    val beneficios: List<String> = emptyList(),
+    val riesgos: List<String> = emptyList(),
+    val vacios: List<String> = emptyList(),
+    // Propiedades adicionales exactas de la vista de diseño
+    val etiqueta: String = if (actual) "TU ROTACIÓN ACTUAL" else "ALTERNATIVA",
+    val beneficioTexto: String = beneficios.firstOrNull() ?: "",
+    val riesgoTexto: String = riesgos.firstOrNull() ?: "",
+    val evidenciaNasaTexto: String = "SMAP: humedad baja. POWER: seco.",
+    val datosFaltantesTexto: String = vacios.firstOrNull() ?: "Falta pH del suelo local y registro de lluvias en vereda.",
+    val ahorroAguaPorcentaje: String = "-25%",
+    val ahorroAguaValor: Int = 75,
+    val saludSueloTexto: String = "Mayor",
+    val alertaTexto: String = "Validar época de siembra con asesor local"
 )
 
 data class EvidenciaItem(
@@ -52,7 +62,7 @@ data class CultivoItem(
     val name: String
 )
 
-// 4. Datos de prueba (Mock) sincronizados entre "Inicio", "Mi finca" y "respuesta.json"
+// 4. Datos de prueba (Mock) sincronizados entre "Inicio", "Mi finca", "Rotaciones" y "respuesta.json"
 object MockRepository {
     var nombreUsuario: String = "Elena"
     var ubicacionFinca: String = "Tunja, Boyacá"
@@ -75,6 +85,65 @@ object MockRepository {
         CultivoItem("cebada", "Cebada"),
         CultivoItem("zanahoria", "Zanahoria")
     )
+
+    // Lista fija y fidedigna según el diseño de Figma/mockup
+    val rotacionesComparativa = listOf(
+        OpcionRotacion(
+            id = "actual",
+            actual = true,
+            etiqueta = "TU ROTACIÓN ACTUAL",
+            nombre = "Papa → Maíz",
+            cultivos = listOf("Papa", "Maíz"),
+            puntaje = 0.50,
+            porque = "Punto de partida para comparar.",
+            beneficioTexto = "Mantiene cultivos y equipos conocidos.",
+            riesgoTexto = "Sin leguminosa; vigilar agua y suelo.",
+            evidenciaNasaTexto = "SMAP: humedad baja. POWER: seco.",
+            datosFaltantesTexto = "Falta pH del suelo local y registro de lluvias en vereda.",
+            ahorroAguaPorcentaje = "0%",
+            ahorroAguaValor = 100,
+            saludSueloTexto = "Línea base",
+            alertaTexto = "Revisar rotación con cultivo de cobertura"
+        ),
+        OpcionRotacion(
+            id = "alternativa_1",
+            actual = false,
+            etiqueta = "ALTERNATIVA 1",
+            nombre = "Papa → Maíz → Frijol",
+            cultivos = listOf("Papa", "Maíz", "Frijol"),
+            puntaje = 0.85,
+            porque = "Añade una leguminosa al ciclo.",
+            beneficioTexto = "Aporta nitrógeno y ahorra agua.",
+            riesgoTexto = "Sensible a heladas. Validar fechas.",
+            evidenciaNasaTexto = "SMAP: humedad baja. POWER: seco.",
+            datosFaltantesTexto = "Falta pH del suelo local y registro de lluvias en vereda.",
+            ahorroAguaPorcentaje = "-25%",
+            ahorroAguaValor = 75,
+            saludSueloTexto = "Mayor",
+            alertaTexto = "Validar época de siembra con asesor local"
+        ),
+        OpcionRotacion(
+            id = "alternativa_2",
+            actual = false,
+            etiqueta = "ALTERNATIVA 2",
+            nombre = "Papa → Avena → Arveja",
+            cultivos = listOf("Papa", "Avena", "Arveja"),
+            puntaje = 0.80,
+            porque = "Combina un cereal y una leguminosa.",
+            beneficioTexto = "Protege el suelo y retiene humedad.",
+            riesgoTexto = "Revisar mercado y ajuste de equipos.",
+            evidenciaNasaTexto = "SMAP: humedad baja. POWER: seco.",
+            datosFaltantesTexto = "Falta pH del suelo local y registro de lluvias en vereda.",
+            ahorroAguaPorcentaje = "-20%",
+            ahorroAguaValor = 80,
+            saludSueloTexto = "Mayor",
+            alertaTexto = "Ajustar fechas con calendario de siembra local"
+        )
+    )
+
+    fun obtenerRotacionPorId(id: String): OpcionRotacion {
+        return rotacionesComparativa.find { it.id == id } ?: rotacionesComparativa[1]
+    }
 
     var respuestaMock = RespuestaAnalisis(
         version = "1.0",

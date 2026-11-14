@@ -1,5 +1,6 @@
 package com.example.fieldshift
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -281,7 +282,7 @@ class MiFincaActivity : AppCompatActivity() {
             finish()
         }
         findViewById<LinearLayout>(R.id.navRotaciones).setOnClickListener {
-            Toast.makeText(this, "Vista Rotaciones (rama de Kaito)", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, RotacionesActivity::class.java))
         }
     }
 }

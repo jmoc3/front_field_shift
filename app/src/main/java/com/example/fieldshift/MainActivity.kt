@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Se ejecuta automáticamente al regresar de "Mi finca" para refrescar los cambios
+        // Se ejecuta automáticamente al regresar de "Mi finca" o "Rotaciones" para refrescar los cambios
         cargarDatosInicio()
     }
 
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialCardView>(R.id.btnPerfilTop).setOnClickListener { irAMiFinca() }
 
         val irARotaciones = {
-            Toast.makeText(this, "Vista Rotaciones (rama de Kaito)", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, RotacionesActivity::class.java))
         }
 
         findViewById<MaterialCardView>(R.id.cardCalcularRotaciones).setOnClickListener { irARotaciones() }

@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainDetalleRotacion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F5F0"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
+
+            <!-- Encabezado con Flecha Volver y Título Superior -->
+            <LinearLayout
+                android:id="@+id/btnVolver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="4dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="#171715" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.06"
+                    android:text="DETALLE DE ROTACIÓN"
+                    android:textColor="#171715"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Etiqueta Alternativa -->
+            <TextView
+                android:id="@+id/tvEtiquetaDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:letterSpacing="0.06"
+                android:text="ALTERNATIVA 1"
+                android:textColor="#7A766E"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <!-- Título Principal de la Rotación -->
+            <TextView
+                android:id="@+id/tvTituloDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Papa → Maíz → Frijol"
+                android:textColor="#171715"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Ubicación y Hectáreas -->
+            <TextView
+                android:id="@+id/tvSubtituloDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="16dp"
+                android:text="Tunja, Boyacá · 12 ha"
+                android:textColor="#7A766E"
+                android:textSize="13sp" />
+
+            <!-- Fila Visual del Ciclo de Cultivos (01 Papa -> 02 Maíz -> 03 Frijol) -->
+            <LinearLayout
+                android:id="@+id/containerCicloCultivos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Tarjeta Cultivo 1 -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCultivo1"
+                    android:layout_width="0dp"
+                    android:layout_height="88dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#EDEAE2"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#E2DFD7"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tvNumCultivo1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="01"
+                            android:textColor="#7A766E"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:id="@+id/ivIconCultivo1"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginVertical="2dp"
+                            android:src="@drawable/ic_crop_potato"
+                            app:tint="#171715" />
+
+                        <TextView
+                            android:id="@+id/tvNombreCultivo1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Papa"
+                            android:textColor="#171715"
+                            android:textSize="12.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Flecha 1 -->
+                <TextView
+                    android:id="@+id/tvFlecha1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:text="→"
+                    android:textColor="#7A766E"
+                    android:textSize="16sp" />
+
+                <!-- Tarjeta Cultivo 2 -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCultivo2"
+                    android:layout_width="0dp"
+                    android:layout_height="88dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#EDEAE2"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#E2DFD7"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tvNumCultivo2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="02"
+                            android:textColor="#7A766E"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:id="@+id/ivIconCultivo2"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginVertical="2dp"
+                            android:src="@drawable/ic_crop_corn"
+                            app:tint="#171715" />
+
+                        <TextView
+                            android:id="@+id/tvNombreCultivo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Maíz"
+                            android:textColor="#171715"
+                            android:textSize="12.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Flecha 2 -->
+                <TextView
+                    android:id="@+id/tvFlecha2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:text="→"
+                    android:textColor="#7A766E"
+                    android:textSize="16sp" />
+
+                <!-- Tarjeta Cultivo 3 -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCultivo3"
+                    android:layout_width="0dp"
+                    android:layout_height="88dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#EDEAE2"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#E2DFD7"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tvNumCultivo3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="03"
+                            android:textColor="#7A766E"
+                            android:textSize="10sp" />
+
+                        <ImageView
+                            android:id="@+id/ivIconCultivo3"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginVertical="2dp"
+                            android:src="@drawable/ic_crop_bean"
+                            app:tint="#171715" />
+
+                        <TextView
+                            android:id="@+id/tvNombreCultivo3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Frijol"
+                            android:textColor="#171715"
+                            android:textSize="12.5sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Tarjeta de Tabla Informativa de la Rotación -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="22dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E2DFD7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Fila 1: Por qué se sugiere -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Por qué se sugiere"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDetallePorque"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Añade una leguminosa al ciclo."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 2: Beneficio -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Beneficio"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDetalleBeneficio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Aporta nitrógeno y ahorra agua."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 3: Riesgo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Riesgo"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDetalleRiesgo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Sensible a heladas. Validar fechas."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 4: Evidencia NASA -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Evidencia NASA"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDetalleEvidencia"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Fila 5: Datos faltantes -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="112dp"
+                            android:layout_height="wrap_content"
+                            android:text="Datos faltantes"
+                            android:textColor="#7A766E"
+                            android:textSize="11.5sp" />
+
+                        <TextView
+                            android:id="@+id/tvDetalleDatosFaltantes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:textColor="#171715"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Sección: Lo que puede aportar -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:text="Lo que puede aportar"
+                android:textColor="#171715"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Bloque 1: Consumo de agua -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consumo de agua"
+                    android:textColor="#171715"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAhorroAguaPorcentaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="-25%"
+                    android:textColor="#171715"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- Fila Referencia 100 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Referencia"
+                    android:textColor="#7A766E"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="100"
+                    android:textColor="#7A766E"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+
+            <!-- Barra Referencia (Línea gris base) -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"
+                android:layout_marginBottom="10dp"
+                android:background="#DCD9D0" />
+
+            <!-- Fila Esta rotación 75 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Esta rotación"
+                    android:textColor="#7A766E"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tvAhorroAguaValor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="75"
+                    android:textColor="#7A766E"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+
+            <!-- Barra Esta rotación (75% negra sólida) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <View
+                    android:id="@+id/barraEstaRotacion"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="75"
+                    android:background="#171715" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="25" />
+            </LinearLayout>
+
+            <!-- Bloque 2: Salud del suelo / Nitrógeno -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salud del suelo / Nitrógeno"
+                    android:textColor="#171715"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSaludSueloTexto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Mayor"
+                    android:textColor="#171715"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <!-- Referencia Suelo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Referencia"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+
+            <!-- Barra Referencia Suelo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="45"
+                    android:background="#DCD9D0" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="55" />
+            </LinearLayout>
+
+            <!-- Con leguminosa -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Con leguminosa"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+
+            <!-- Barra Con leguminosa (85% negra sólida) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="3.5dp"
+                android:layout_marginBottom="22dp"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="#171715" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="15" />
+            </LinearLayout>
+
+            <!-- Cuadro de Advertencia / Aviso -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#EDEAE2"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E2DFD7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_alert_circle"
+                        app:tint="#171715" />
+
+                    <TextView
+                        android:id="@+id/tvAlertaDetalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Validar época de siembra con asesor local"
+                        android:textColor="#171715"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Botón de Acción Principal: Guardar esta rotación en mi finca -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnGuardarRotacion"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#141413"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Guardar esta rotación en mi finca"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Línea divisoria superior de la barra de navegación -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E2DFD7" />
+
+    <!-- Barra de navegación inferior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#F7F5F0"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/navInicioDetalle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_home"
+                app:tint="#7A766E" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Inicio"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navRotacionesDetalle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_chart"
+                app:tint="#171715" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Rotaciones"
+                android:textColor="#171715"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navMiFincaDetalle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_user"
+                app:tint="#7A766E" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Mi finca"
+                android:textColor="#7A766E"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

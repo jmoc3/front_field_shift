@@ -35,6 +35,18 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Pantalla de Rotaciones: Tu próximo ciclo -->
+        <activity
+            android:name=".RotacionesActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Pantalla de Detalle de Rotación -->
+        <activity
+            android:name=".DetalleRotacionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
