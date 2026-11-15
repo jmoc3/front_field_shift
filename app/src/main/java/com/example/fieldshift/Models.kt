@@ -23,6 +23,7 @@ object MockRepository {
         CultivoItem("papa", "Papa"),
         CultivoItem("maiz", "Maíz"),
         CultivoItem("frijol", "Frijol"),
+        CultivoItem("arroz", "Arroz"),
         CultivoItem("avena", "Avena"),
         CultivoItem("arveja", "Arveja"),
         CultivoItem("trigo", "Trigo"),

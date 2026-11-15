@@ -3,8 +3,10 @@ package com.example.fieldshift
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,7 +35,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         // Buscamos en el último análisis de la NASA guardado, o en el respaldo si no existe
         val analisisNasa = MockRepository.ultimoAnalisisNasa
-        rotacionSeleccionada = if (analisisNasa != null) {
+        rotacionSeleccionada = if (analisisNasa != null && analisisNasa.opciones.isNotEmpty()) {
             analisisNasa.opciones.find { it.id == rotacionId } ?: analisisNasa.opciones.first()
         } else {
             MockRepository.obtenerRotacionPorId(rotacionId)
@@ -41,7 +43,6 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         cargarDatos()
         configurarCicloCultivos()
-        configurarAcciones()
         configurarNavegacion()
     }
 
@@ -54,22 +55,18 @@ class DetalleRotacionActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvTituloDetalle).text = rot.nombre
         findViewById<TextView>(R.id.tvSubtituloDetalle).text = "${MockRepository.ubicacionFinca} · ${MockRepository.hectareasFinca} ha"
 
-        // --- Filas Informativas ---
+        // --- Filas informativas ---
         findViewById<TextView>(R.id.tvDetallePorque).text = rot.porque
 
-        // Beneficios
         val primerBeneficio = rot.beneficios.firstOrNull() ?: "Mantiene prácticas conocidas."
         findViewById<TextView>(R.id.tvDetalleBeneficio).text = primerBeneficio
 
-        // Riesgos
         val primerRiesgo = rot.riesgos.firstOrNull() ?: "Ninguno crítico reportado."
         findViewById<TextView>(R.id.tvDetalleRiesgo).text = primerRiesgo
 
-        // Evidencia NASA
         val evidenciaTexto = rot.evidencia.firstOrNull()?.let { "${it.dato}: ${it.valor} ${it.unidad} (${it.fuente})" } ?: "NASA POWER: Condiciones estables."
         findViewById<TextView>(R.id.tvDetalleEvidencia).text = evidenciaTexto
 
-        // Datos faltantes / Vacíos
         val primerVacio = rot.vacios.firstOrNull() ?: "Falta análisis de suelo local detallado."
         findViewById<TextView>(R.id.tvDetalleDatosFaltantes).text = primerVacio
 
@@ -90,7 +87,9 @@ class DetalleRotacionActivity : AppCompatActivity() {
         barraEstaRotacion.layoutParams = params
 
         // --- Aviso / Alerta ---
-        findViewById<TextView>(R.id.tvAlertaDetalle).text = "Herramienta de apoyo: valida estas opciones con un agrónomo local."
+        val aviso = MockRepository.ultimoAnalisisNasa?.aviso
+        findViewById<TextView>(R.id.tvAlertaDetalle).text =
+            if (!aviso.isNullOrBlank()) aviso else "Herramienta de apoyo: valida estas opciones con un agrónomo local."
     }
 
     private fun configurarCicloCultivos() {
@@ -98,24 +97,48 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         if (cultivos.isNotEmpty()) {
             findViewById<TextView>(R.id.tvNumCultivo1)?.text = "01"
-            findViewById<TextView>(R.id.tvNombreCultivo1)?.text = cultivos[0]
+            findViewById<TextView>(R.id.tvNombreCultivo1)?.text = formatearNombreCultivo(cultivos[0])
+            findViewById<ImageView>(R.id.ivIconCultivo1)?.setImageResource(obtenerIconoCultivo(cultivos[0]))
         }
 
         if (cultivos.size > 1) {
             findViewById<TextView>(R.id.tvNumCultivo2)?.text = "02"
-            findViewById<TextView>(R.id.tvNombreCultivo2)?.text = cultivos[1]
+            findViewById<TextView>(R.id.tvNombreCultivo2)?.text = formatearNombreCultivo(cultivos[1])
+            findViewById<ImageView>(R.id.ivIconCultivo2)?.setImageResource(obtenerIconoCultivo(cultivos[1]))
         }
 
         if (cultivos.size > 2) {
             findViewById<View>(R.id.tvFlecha2)?.visibility = View.VISIBLE
             findViewById<View>(R.id.cardCultivo3)?.visibility = View.VISIBLE
             findViewById<TextView>(R.id.tvNumCultivo3)?.text = "03"
-            findViewById<TextView>(R.id.tvNombreCultivo3)?.text = cultivos[2]
+            findViewById<TextView>(R.id.tvNombreCultivo3)?.text = formatearNombreCultivo(cultivos[2])
+            findViewById<ImageView>(R.id.ivIconCultivo3)?.setImageResource(obtenerIconoCultivo(cultivos[2]))
+        } else {
+            findViewById<View>(R.id.tvFlecha2)?.visibility = View.GONE
+            findViewById<View>(R.id.cardCultivo3)?.visibility = View.GONE
         }
     }
 
-    private fun configurarAcciones() {
-        // Acciones adicionales si las hay
+    private fun formatearNombreCultivo(idONombre: String): String {
+        val item = MockRepository.catalogoEcoCrop.find {
+            it.id.equals(idONombre, ignoreCase = true) || it.name.equals(idONombre, ignoreCase = true)
+        }
+        return item?.name ?: idONombre.replaceFirstChar { it.uppercase() }
+    }
+
+    private fun obtenerIconoCultivo(nombre: String): Int {
+        val lower = nombre.lowercase().trim()
+        return when {
+            lower.contains("papa") -> R.drawable.ic_crop_potato
+            lower.contains("maiz") || lower.contains("maíz") -> R.drawable.ic_crop_corn
+            lower.contains("frijol") || lower.contains("fríjol") || lower.contains("mucuna") -> R.drawable.ic_crop_bean
+            lower.contains("arroz") -> R.drawable.ic_crop_rice
+            lower.contains("batata") -> R.drawable.ic_crop_sweetpotato
+            lower.contains("yuca") -> R.drawable.ic_crop_cassava
+            lower.contains("avena") || lower.contains("trigo") || lower.contains("cebada") -> R.drawable.ic_crop_oat
+            lower.contains("arveja") -> R.drawable.ic_crop_pea
+            else -> R.drawable.ic_crop_potato
+        }
     }
 
     private fun configurarNavegacion() {
@@ -124,7 +147,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
             finish()
         }
 
-        // Barra inferior: Inicio (con el ID correcto del XML de detalle)
+        // Barra inferior: Inicio
         findViewById<LinearLayout>(R.id.navInicioDetalle)?.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -133,19 +156,26 @@ class DetalleRotacionActivity : AppCompatActivity() {
             finish()
         }
 
-        // Barra inferior: Rotaciones (con el ID correcto del XML de detalle)
+        // Barra inferior: Rotaciones
         findViewById<LinearLayout>(R.id.navRotacionesDetalle)?.setOnClickListener {
             finish() // Cierra el detalle y regresa a la lista de rotaciones
         }
 
-        // Barra inferior: Mi Finca (con el ID correcto del XML de detalle)
+        // Barra inferior: Mi Finca
         findViewById<LinearLayout>(R.id.navMiFincaDetalle)?.setOnClickListener {
-            val intent = Intent(this, MiFincaActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MiFincaActivity::class.java))
         }
 
-        // Botón principal de guardar al final de la tarjeta
+        // Botón "Guardar esta rotación en mi finca"
         findViewById<View>(R.id.btnGuardarRotacion)?.setOnClickListener {
+            val nombresFormateados = rotacionSeleccionada.cultivos.map { formatearNombreCultivo(it) }
+            MockRepository.cultivosSeleccionados = nombresFormateados.toMutableList()
+            Toast.makeText(
+                this,
+                "Rotación guardada en tu finca: ${rotacionSeleccionada.nombre}",
+                Toast.LENGTH_LONG
+            ).show()
+
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
