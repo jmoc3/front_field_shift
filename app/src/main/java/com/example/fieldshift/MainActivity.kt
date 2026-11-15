@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
         val nombre = prefs.getString("user_nombre", MockRepository.nombreUsuario)
 
-        findViewById<TextView>(R.id.tvSaludo).text = "Hola, $nombre"
+        findViewById<TextView>(R.id.tvSaludo).text = getString(R.string.saludo, nombre)
 
         // El backend no maneja parcelas: se muestra la superficie registrada
         findViewById<TextView>(R.id.tvParcelasValor).text = formatearNumero(MockRepository.hectareasFinca)
@@ -64,15 +64,15 @@ class MainActivity : AppCompatActivity() {
         // Humedad del suelo en raíces (GWETROOT 0–1) del último análisis, como índice /100
         val humedad = MockRepository.ultimoAnalisisNasa?.clima?.humedad_suelo
         findViewById<TextView>(R.id.tvHumedadValor).text = humedad?.let { (it * 100).toInt().toString() } ?: "—"
-        findViewById<TextView>(R.id.tvHumedadFuente).text = "NASA POWER · índice /100"
+        findViewById<TextView>(R.id.tvHumedadFuente).text = getString(R.string.inicio_humedad_fuente)
 
         findViewById<TextView>(R.id.tvLluviaSub).text = "NASA POWER"
 
         // Texto de respaldo mientras llega la actividad del servidor
-        val secuenciaActual = MockRepository.cultivosSeleccionados.joinToString(separator = " → ")
-        findViewById<TextView>(R.id.tvActividadTitulo1)?.text = "Rotación actual"
+        val secuenciaActual = MockRepository.cultivosSeleccionados.joinToString(" → ") { MockRepository.nombreCultivo(it) }
+        findViewById<TextView>(R.id.tvActividadTitulo1)?.text = getString(R.string.rotacion_actual)
         findViewById<TextView>(R.id.tvActividadRotacion)?.text = secuenciaActual
-        findViewById<TextView>(R.id.tvActividadFecha1)?.text = "Tu finca"
+        findViewById<TextView>(R.id.tvActividadFecha1)?.text = getString(R.string.act_tu_finca)
     }
 
     // ========================================================
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     pbActividad.visibility = View.GONE
                     mostrarActividades(emptyList())
                     // Si falla el internet o el servidor, no explota, solo avisa
-                    Toast.makeText(this@MainActivity, "Sin conexión para actividades", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, R.string.act_sin_conexion, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -124,13 +124,28 @@ class MainActivity : AppCompatActivity() {
         val dialogo = AlertDialog.Builder(this)
             .setTitle(nombre)
             .setMessage(listOf(correo, MockRepository.ubicacionFinca).filter { it.isNotBlank() }.joinToString("\n"))
-            .setPositiveButton("Cerrar sesión") { _, _ -> cerrarSesion() }
-            .setNegativeButton("Cancelar", null)
+            .setPositiveButton(R.string.cerrar_sesion) { _, _ -> cerrarSesion() }
+            .setNegativeButton(R.string.cancelar, null)
+            .setNeutralButton(R.string.idioma) { _, _ -> mostrarDialogoIdioma() }
             .create()
         dialogo.show()
         // Mismos colores que el diálogo de Mi Finca
         dialogo.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.parseColor("#B83B2A"))
         dialogo.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.parseColor("#7A766E"))
+    }
+
+    /** Lista de idiomas con el actual marcado; cada idioma se muestra en su propio nombre. */
+    private fun mostrarDialogoIdioma() {
+        val codigos = arrayOf("es", "en")
+        AlertDialog.Builder(this)
+            .setTitle(R.string.idioma)
+            .setSingleChoiceItems(arrayOf("Español", "English"), codigos.indexOf(Idioma.actual())) { dialogo, i ->
+                dialogo.dismiss()
+                Idioma.cambiar(codigos[i])
+            }
+            .setNegativeButton(R.string.cancelar, null)
+            .show()
+            .getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.parseColor("#7A766E"))
     }
 
     /** Borra los datos locales del usuario y vuelve a Acceso sin dejar pantallas atrás. */
@@ -163,12 +178,12 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(ids[4]).text = formatearFecha(item.fecha) ?: item.fuente
         }
 
-        // "Lluvia 7 días": el backend lo envía como texto ("12 mm · 40 % menos que lo normal...")
+        // "Lluvia 7 días": el backend lo envía como texto ("12 mm · 40 % menos que lo normal..." / "40 % less than normal")
         val lluvia = items.find { it.tipo == "lluvia" }?.detalle
-        val cambio = lluvia?.let { Regex("(\\d+) % (más|menos)").find(it) }
+        val cambio = lluvia?.let { Regex("(\\d+) % (más|menos|more|less)").find(it) }
         findViewById<TextView>(R.id.tvLluviaValor).text = when {
-            cambio != null -> (if (cambio.groupValues[2] == "más") "+" else "−") + cambio.groupValues[1] + "%"
-            lluvia?.contains("igual a lo normal") == true -> "0%"
+            cambio != null -> (if (cambio.groupValues[2] in setOf("más", "more")) "+" else "−") + cambio.groupValues[1] + "%"
+            lluvia?.contains("igual a lo normal") == true || lluvia?.contains("same as normal") == true -> "0%"
             else -> "—"
         }
     }
@@ -182,10 +197,10 @@ class MainActivity : AppCompatActivity() {
         else -> R.drawable.ic_check
     }
 
-    /** "2026-11-14" -> "14 nov", "2026-12" -> "dic 2026" */
+    /** "2026-11-14" -> "14 nov", "2026-12" -> "dic 2026" (meses en el idioma de la app) */
     private fun formatearFecha(fecha: String?): String? {
         val partes = fecha?.split("-") ?: return null
-        val meses = listOf("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
+        val meses = resources.getStringArray(R.array.meses_cortos)
         val mes = partes.getOrNull(1)?.toIntOrNull()?.let { meses.getOrNull(it - 1) } ?: return fecha
         return if (partes.size >= 3) "${partes[2].toIntOrNull() ?: partes[2]} $mes" else "$mes ${partes[0]}"
     }

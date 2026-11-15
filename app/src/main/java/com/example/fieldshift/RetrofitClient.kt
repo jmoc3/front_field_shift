@@ -13,6 +13,10 @@ object RetrofitClient {
     private val cliente = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
+        // El backend arma los textos en el idioma de la app ("es" o "en")
+        .addInterceptor { chain ->
+            chain.proceed(chain.request().newBuilder().header("Accept-Language", Idioma.actual()).build())
+        }
         .build()
 
     val apiService: ApiService by lazy {

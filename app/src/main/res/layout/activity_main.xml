@@ -37,7 +37,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.06"
-                        android:text="TERRA / INICIO"
+                        android:text="@string/inicio_ruta"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />
 
@@ -46,7 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Hola, Elena"
+                        android:text="@string/ej_saludo"
                         android:textColor="#171715"
                         android:textSize="30sp"
                         android:textStyle="bold" />
@@ -98,7 +98,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tu finca, de un vistazo"
+                            android:text="@string/inicio_vistazo"
                             android:textColor="#171715"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -108,7 +108,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:text="Esta semana"
+                            android:text="@string/inicio_esta_semana"
                             android:textColor="#7A766E"
                             android:textSize="12sp" />
                     </RelativeLayout>
@@ -152,7 +152,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
                                     android:id="@+id/tvParcelasLabel"
-                                    android:text="Hectáreas"
+                                    android:text="@string/inicio_hectareas"
                                     android:textColor="#171715"
                                     android:textSize="12sp" />
 
@@ -161,7 +161,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="12 ha en total"
+                                    android:text="@string/ej_hectareas_total"
                                     android:textColor="#8A867E"
                                     android:textSize="10sp" />
                             </LinearLayout>
@@ -198,7 +198,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="Salud del suelo"
+                                    android:text="@string/inicio_salud_suelo"
                                     android:textColor="#171715"
                                     android:textSize="12sp" />
 
@@ -207,7 +207,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="SMAP · índice /100"
+                                    android:text="@string/ej_smap_indice"
                                     android:textColor="#8A867E"
                                     android:textSize="10sp" />
                             </LinearLayout>
@@ -244,7 +244,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="Lluvia 7 días"
+                                    android:text="@string/inicio_lluvia_7"
                                     android:textColor="#171715"
                                     android:textSize="12sp" />
 
@@ -267,7 +267,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:text="¿Qué quieres hacer?"
+                android:text="@string/inicio_que_hacer"
                 android:textColor="#171715"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -311,7 +311,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:text="Configurar mi finca"
+                            android:text="@string/inicio_configurar"
                             android:textColor="#171715"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -348,7 +348,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Calcular rotaciones"
+                            android:text="@string/inicio_calcular"
                             android:textColor="#FFFFFF"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -361,7 +361,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Actividad reciente"
+                android:text="@string/inicio_actividad"
                 android:textColor="#171715"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -413,7 +413,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tvActividadTitulo1"
-                        android:text="Rotación guardada"
+                        android:text="@string/ej_act_titulo1"
                         android:textColor="#171715"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -423,7 +423,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Parcela Norte · Papa → Maíz → Frijol"
+                        android:text="@string/ej_act_detalle1"
                         android:textColor="#7A766E"
                         android:textSize="12sp" />
 
@@ -432,7 +432,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:id="@+id/tvActividadFecha1"
-                        android:text="Hace 2 h"
+                        android:text="@string/ej_act_fecha1"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -474,7 +474,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tvActividadTitulo2"
-                        android:text="Nueva previsión de lluvia"
+                        android:text="@string/ej_act_titulo2"
                         android:textColor="#171715"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -484,7 +484,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="18 mm para los próximos 7 días"
+                        android:text="@string/ej_act_detalle2"
                         android:textColor="#7A766E"
                         android:textSize="12sp" />
 
@@ -493,7 +493,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:id="@+id/tvActividadFecha2"
-                        android:text="Hace 4 h"
+                        android:text="@string/ej_act_fecha2"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -535,7 +535,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tvActividadTitulo3"
-                        android:text="Análisis de suelo añadido"
+                        android:text="@string/ej_act_titulo3"
                         android:textColor="#171715"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -545,7 +545,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Parcela Sur · materia orgánica: 2,4%"
+                        android:text="@string/ej_act_detalle3"
                         android:textColor="#7A766E"
                         android:textSize="12sp" />
 
@@ -554,7 +554,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:id="@+id/tvActividadFecha3"
-                        android:text="Ayer"
+                        android:text="@string/ej_act_fecha3"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -591,7 +591,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Decide con una visión más completa"
+                            android:text="@string/inicio_vision"
                             android:textColor="#171715"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -601,7 +601,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Observaciones NASA + información de tu suelo"
+                            android:text="@string/inicio_vision_sub"
                             android:textColor="#7A766E"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -644,7 +644,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Inicio"
+                android:text="@string/nav_inicio"
                 android:textColor="#171715"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -670,7 +670,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Rotaciones"
+                android:text="@string/nav_rotaciones"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -695,7 +695,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Mi finca"
+                android:text="@string/nav_mi_finca"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>

@@ -90,7 +90,7 @@ class RotacionesActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(
                             this@RotacionesActivity,
-                            "Datos locales (Servidor: HTTP ${respuesta.code()})",
+                            getString(R.string.rot_datos_locales_http, respuesta.code()),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -100,7 +100,7 @@ class RotacionesActivity : AppCompatActivity() {
                     mostrarCarga(false)
                     Toast.makeText(
                         this@RotacionesActivity,
-                        "Datos locales sincronizados (Servidor: ${e.message})",
+                        getString(R.string.rot_datos_locales_error, e.message),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -114,15 +114,19 @@ class RotacionesActivity : AppCompatActivity() {
         val clima = analisis?.clima
         if (clima != null) {
             val nivelHumedad = (clima.humedad_nivel ?: "").replaceFirstChar { it.uppercase() }
-            findViewById<TextView>(R.id.tvSmapHumedad)?.text = "Humedad: $nivelHumedad"
+            findViewById<TextView>(R.id.tvSmapHumedad)?.text = getString(R.string.rot_humedad, nivelHumedad)
 
             // "húmedo/templado" -> "Húmedo/Templado", como en el diseño
             val tipoClima = (clima.clima_tipo ?: "").split("/").joinToString("/") { it.replaceFirstChar { c -> c.uppercase() } }
-            findViewById<TextView>(R.id.tvNasaClima)?.text = "Clima: $tipoClima"
+            findViewById<TextView>(R.id.tvNasaClima)?.text = getString(R.string.rot_clima, tipoClima)
 
-            findViewById<TextView>(R.id.tvPieRotaciones)?.text =
-                analisis.aviso ?: "Las señales NASA orientan; valida la decisión con información local."
+            findViewById<TextView>(R.id.tvPieRotaciones)?.text = analisis.aviso ?: getString(R.string.aviso_por_defecto)
         }
+
+        val fbBeneficio = getString(R.string.fb_beneficio)
+        val fbRiesgo = getString(R.string.fb_riesgo)
+        val fbEvidencia = getString(R.string.fb_evidencia)
+        val fbFaltantes = getString(R.string.fb_faltantes)
 
         // --- Rotación Actual ---
         val opciones = opcionesActivas()
@@ -130,10 +134,10 @@ class RotacionesActivity : AppCompatActivity() {
         if (actual != null) {
             findViewById<TextView>(R.id.tvTituloActual)?.text = actual.nombre
             findViewById<TextView>(R.id.tvPorqueActual)?.text = actual.porque
-            findViewById<TextView>(R.id.tvBeneficioActual)?.text = actual.beneficios.firstOrNull() ?: "Mantiene manejo conocido"
-            findViewById<TextView>(R.id.tvRiesgoActual)?.text = actual.riesgos.firstOrNull() ?: "Sin riesgos críticos"
-            findViewById<TextView>(R.id.tvEvidenciaActual)?.text = actual.evidencia.firstOrNull()?.comoTexto() ?: "NASA POWER: Estable"
-            findViewById<TextView>(R.id.tvDatosFaltantesActual)?.text = actual.vaciosOrdenados(opciones).firstOrNull() ?: "Falta análisis de suelo"
+            findViewById<TextView>(R.id.tvBeneficioActual)?.text = actual.beneficios.firstOrNull() ?: fbBeneficio
+            findViewById<TextView>(R.id.tvRiesgoActual)?.text = actual.riesgos.firstOrNull() ?: fbRiesgo
+            findViewById<TextView>(R.id.tvEvidenciaActual)?.text = actual.evidencia.firstOrNull()?.comoTexto() ?: fbEvidencia
+            findViewById<TextView>(R.id.tvDatosFaltantesActual)?.text = actual.vaciosOrdenados(opciones).firstOrNull() ?: fbFaltantes
         }
 
         // El backend puede devolver menos de 2 alternativas: no se deja la tarjeta con el texto de ejemplo
@@ -145,10 +149,10 @@ class RotacionesActivity : AppCompatActivity() {
         if (alt1 != null) {
             findViewById<TextView>(R.id.tvTituloAlt1)?.text = alt1.nombre
             findViewById<TextView>(R.id.tvPorqueAlt1)?.text = alt1.porque
-            findViewById<TextView>(R.id.tvBeneficioAlt1)?.text = alt1.beneficios.firstOrNull() ?: "Aporta beneficios al suelo"
-            findViewById<TextView>(R.id.tvRiesgoAlt1)?.text = alt1.riesgos.firstOrNull() ?: "Revisar clima"
-            findViewById<TextView>(R.id.tvEvidenciaAlt1)?.text = alt1.evidencia.firstOrNull()?.comoTexto() ?: "NASA POWER: Favorable"
-            findViewById<TextView>(R.id.tvDatosFaltantesAlt1)?.text = alt1.vaciosOrdenados(opciones).firstOrNull() ?: "Falta precio de mercado"
+            findViewById<TextView>(R.id.tvBeneficioAlt1)?.text = alt1.beneficios.firstOrNull() ?: fbBeneficio
+            findViewById<TextView>(R.id.tvRiesgoAlt1)?.text = alt1.riesgos.firstOrNull() ?: fbRiesgo
+            findViewById<TextView>(R.id.tvEvidenciaAlt1)?.text = alt1.evidencia.firstOrNull()?.comoTexto() ?: fbEvidencia
+            findViewById<TextView>(R.id.tvDatosFaltantesAlt1)?.text = alt1.vaciosOrdenados(opciones).firstOrNull() ?: fbFaltantes
         }
 
         // --- Alternativa 2 ---
@@ -156,10 +160,10 @@ class RotacionesActivity : AppCompatActivity() {
         if (alt2 != null) {
             findViewById<TextView>(R.id.tvTituloAlt2)?.text = alt2.nombre
             findViewById<TextView>(R.id.tvPorqueAlt2)?.text = alt2.porque
-            findViewById<TextView>(R.id.tvBeneficioAlt2)?.text = alt2.beneficios.firstOrNull() ?: "Buena diversificación"
-            findViewById<TextView>(R.id.tvRiesgoAlt2)?.text = alt2.riesgos.firstOrNull() ?: "Requiere rotación"
-            findViewById<TextView>(R.id.tvEvidenciaAlt2)?.text = alt2.evidencia.firstOrNull()?.comoTexto() ?: "NASA POWER: Adecuado"
-            findViewById<TextView>(R.id.tvDatosFaltantesAlt2)?.text = alt2.vaciosOrdenados(opciones).firstOrNull() ?: "Falta historial local"
+            findViewById<TextView>(R.id.tvBeneficioAlt2)?.text = alt2.beneficios.firstOrNull() ?: fbBeneficio
+            findViewById<TextView>(R.id.tvRiesgoAlt2)?.text = alt2.riesgos.firstOrNull() ?: fbRiesgo
+            findViewById<TextView>(R.id.tvEvidenciaAlt2)?.text = alt2.evidencia.firstOrNull()?.comoTexto() ?: fbEvidencia
+            findViewById<TextView>(R.id.tvDatosFaltantesAlt2)?.text = alt2.vaciosOrdenados(opciones).firstOrNull() ?: fbFaltantes
         }
     }
 

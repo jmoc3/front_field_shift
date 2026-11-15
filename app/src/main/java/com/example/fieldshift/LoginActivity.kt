@@ -47,7 +47,11 @@ class LoginActivity : AppCompatActivity() {
     private val cultivosAdicionales = mutableListOf<CultivoExtraItem>()
 
     private val opcionesEcoCrop: List<String>
-        get() = listOf("Seleccionar cultivo") + MockRepository.catalogoEcoCrop.map { it.name }
+        get() = listOf(getString(R.string.seleccionar_cultivo)) + MockRepository.catalogoEcoCrop.map { it.name }
+
+    /** Id del cultivo elegido en un selector (la posición 0 es "Seleccionar cultivo"). */
+    private fun idElegido(spinner: Spinner): String =
+        MockRepository.catalogoEcoCrop[spinner.selectedItemPosition - 1].id
 
     private val regexSoloLetras = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]{2,}$")
 
@@ -64,9 +68,22 @@ class LoginActivity : AppCompatActivity() {
 
         cargarSesionPreviaSiExiste()
         inicializarVistas()
+        configurarSelectorIdioma()
         configurarSpinnersBase()
         configurarAcciones()
         cargarCatalogoCultivos()
+    }
+
+    /** "ES | EN": el idioma activo relleno en negro; tocar el otro cambia la app. */
+    private fun configurarSelectorIdioma() {
+        val activo = Idioma.actual()
+        mapOf("es" to R.id.tvIdiomaEs, "en" to R.id.tvIdiomaEn).forEach { (codigo, id) ->
+            val tv = findViewById<TextView>(id)
+            val seleccionado = codigo == activo
+            tv.setBackgroundResource(if (seleccionado) R.drawable.bg_idioma_activo else 0)
+            tv.setTextColor(Color.parseColor(if (seleccionado) "#FFFFFF" else "#7A766E"))
+            tv.setOnClickListener { if (!seleccionado) Idioma.cambiar(codigo) }
+        }
     }
 
     /** Pide GET api/v1/cultivos y rellena los selectores ya creados. */
@@ -74,13 +91,13 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val cargado = withContext(Dispatchers.IO) { MockRepository.cargarCatalogo() }
             if (!cargado) {
-                Toast.makeText(this@LoginActivity, "No se pudo cargar el catálogo de cultivos", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@LoginActivity, R.string.error_catalogo, Toast.LENGTH_LONG).show()
                 return@launch
             }
             (listOf(spinnerCultivo1, spinnerCultivo2) + cultivosAdicionales.map { it.spinner }).forEach { spinner ->
-                val elegido = spinner.selectedItem?.toString()
+                val posicion = spinner.selectedItemPosition
                 spinner.adapter = crearAdaptadorEcoCrop()
-                spinner.setSelection(opcionesEcoCrop.indexOf(elegido).coerceAtLeast(0))
+                spinner.setSelection(posicion.coerceIn(0, opcionesEcoCrop.size - 1))
             }
         }
     }
@@ -104,8 +121,8 @@ class LoginActivity : AppCompatActivity() {
             prefs.getString("user_cultivos", null)?.let { guardados ->
                 val lista = guardados.split("||").filter { it.isNotBlank() }
                 if (lista.size >= 2) {
-                    MockRepository.cultivosSeleccionados.clear()
-                    MockRepository.cultivosSeleccionados.addAll(lista)
+                    // Versiones anteriores guardaban nombres en español: se pasan a ids
+                    MockRepository.cultivosSeleccionados = lista.map { MockRepository.idCultivo(it) }.toMutableList()
                 }
             }
         } catch (e: Exception) {
@@ -150,12 +167,12 @@ class LoginActivity : AppCompatActivity() {
             val email = etLoginEmail.text.toString().trim()
 
             if (!esCorreoValido(email)) {
-                etLoginEmail.error = "Ingresa un correo válido"
+                etLoginEmail.error = getString(R.string.error_correo)
                 etLoginEmail.requestFocus()
                 return@setOnClickListener
             }
 
-            btnEntrar.mostrarCargando(true, "Entrando…")
+            btnEntrar.mostrarCargando(true, getString(R.string.cargando_entrar))
 
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
@@ -194,7 +211,7 @@ class LoginActivity : AppCompatActivity() {
                             if (idReal != null) {
                                 prefs.edit().putInt("user_id", idReal).apply()
                             } else {
-                                Toast.makeText(this@LoginActivity, "Error: El servidor no envió datos de usuario", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@LoginActivity, R.string.error_sin_usuario, Toast.LENGTH_LONG).show()
                             }
 
                             prefs.edit().putString("user_email", email).apply()
@@ -215,18 +232,18 @@ class LoginActivity : AppCompatActivity() {
                                 prefs.edit().putString("user_hectareas", it.toString()).apply()
                             }
 
-                            Toast.makeText(this@LoginActivity, "Conectado: ${datosBackend.mensaje ?: "Éxito"}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, R.string.conectado, Toast.LENGTH_SHORT).show()
                             irAMainActivity()
                         } else if (respuesta.code() == 404) {
-                            Toast.makeText(this@LoginActivity, "El correo no está registrado", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@LoginActivity, R.string.error_no_registrado, Toast.LENGTH_LONG).show()
                         } else {
-                            Toast.makeText(this@LoginActivity, "Error en el servidor (${respuesta.code()})", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@LoginActivity, getString(R.string.error_servidor, respuesta.code()), Toast.LENGTH_LONG).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         btnEntrar.mostrarCargando(false, "")
-                        Toast.makeText(this@LoginActivity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@LoginActivity, getString(R.string.error_red, e.message), Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -243,50 +260,49 @@ class LoginActivity : AppCompatActivity() {
             val hectareasStr = etRegHectareas.text.toString().trim()
 
             if (!regexSoloLetras.matches(nombre)) {
-                etRegNombre.error = "Ingresa un nombre válido"
+                etRegNombre.error = getString(R.string.error_nombre)
                 etRegNombre.requestFocus()
                 return@setOnClickListener
             }
 
             if (!esCorreoValido(email)) {
-                etRegEmail.error = "Ingresa un correo válido"
+                etRegEmail.error = getString(R.string.error_correo)
                 etRegEmail.requestFocus()
                 return@setOnClickListener
             }
 
             val cantidadLetrasUbicacion = ubicacion.count { it.isLetter() }
             if (ubicacion.length < 3 || cantidadLetrasUbicacion < 3) {
-                etRegUbicacion.error = "Ingresa municipio y departamento"
+                etRegUbicacion.error = getString(R.string.error_ubicacion)
                 etRegUbicacion.requestFocus()
                 return@setOnClickListener
             }
 
             val hectareasNum = hectareasStr.toDoubleOrNull()
             if (hectareasNum == null || hectareasNum <= 0) {
-                etRegHectareas.error = "Ingresa una superficie válida"
+                etRegHectareas.error = getString(R.string.error_superficie)
                 etRegHectareas.requestFocus()
                 return@setOnClickListener
             }
 
             if (spinnerCultivo1.selectedItemPosition == 0 || spinnerCultivo2.selectedItemPosition == 0) {
-                Toast.makeText(this@LoginActivity, "Selecciona al menos 2 cultivos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, R.string.error_min_cultivos, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             for ((index, item) in cultivosAdicionales.withIndex()) {
                 if (item.spinner.selectedItemPosition == 0) {
                     val num = index + 3
-                    Toast.makeText(this@LoginActivity, "Selecciona el Cultivo $num", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, getString(R.string.error_selecciona_cultivo_n, num), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
             }
 
-            val todosLosCultivos = mutableListOf<String>()
-            todosLosCultivos.add(spinnerCultivo1.selectedItem.toString())
-            todosLosCultivos.add(spinnerCultivo2.selectedItem.toString())
-            cultivosAdicionales.forEach { todosLosCultivos.add(it.spinner.selectedItem.toString()) }
+            // Se guardan los ids del catálogo, no los nombres (cambian con el idioma)
+            val todosLosCultivos = (listOf(spinnerCultivo1, spinnerCultivo2) + cultivosAdicionales.map { it.spinner })
+                .map { idElegido(it) }
 
-            btnGuardarRegistro.mostrarCargando(true, "Creando tu finca…")
+            btnGuardarRegistro.mostrarCargando(true, getString(R.string.cargando_registro))
 
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
@@ -295,7 +311,7 @@ class LoginActivity : AppCompatActivity() {
                         correo = email,
                         ubicacion = ubicacion,
                         hectareas = hectareasNum,
-                        rotacion = todosLosCultivos.map { MockRepository.buscarCultivo(it)?.id ?: normalizar(it) }
+                        rotacion = todosLosCultivos
                     )
                     val respuesta = RetrofitClient.apiService.registro(peticion)
 
@@ -308,8 +324,7 @@ class LoginActivity : AppCompatActivity() {
                             MockRepository.nombreUsuario = nombre
                             MockRepository.ubicacionFinca = ubicacion
                             MockRepository.hectareasFinca = hectareasNum
-                            MockRepository.cultivosSeleccionados.clear()
-                            MockRepository.cultivosSeleccionados.addAll(todosLosCultivos)
+                            MockRepository.cultivosSeleccionados = todosLosCultivos.toMutableList()
                             MockRepository.ultimoAnalisisNasa = null
 
                             val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
@@ -319,7 +334,7 @@ class LoginActivity : AppCompatActivity() {
                             if (idReal != null) {
                                 prefs.edit().putInt("user_id", idReal).apply()
                             } else {
-                                Toast.makeText(this@LoginActivity, "Error: El servidor no envió datos de usuario", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@LoginActivity, R.string.error_sin_usuario, Toast.LENGTH_LONG).show()
                             }
 
                             prefs.edit()
@@ -330,17 +345,17 @@ class LoginActivity : AppCompatActivity() {
                                 .putString("user_cultivos", todosLosCultivos.joinToString("||"))
                                 .apply()
 
-                            Toast.makeText(this@LoginActivity, "Registro exitoso en servidor", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, R.string.registro_ok, Toast.LENGTH_SHORT).show()
                             irAMainActivity()
                         } else {
                             val errorExacto = respuesta.errorBody()?.string()
-                            Toast.makeText(this@LoginActivity, "Error ${respuesta.code()}: $errorExacto", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@LoginActivity, getString(R.string.error_codigo, respuesta.code(), errorExacto), Toast.LENGTH_LONG).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         btnGuardarRegistro.mostrarCargando(false, "")
-                        Toast.makeText(this@LoginActivity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@LoginActivity, getString(R.string.error_red, e.message), Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -373,14 +388,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val tvLabel = TextView(this).apply {
-            text = "Cultivo $numeroInicial"
+            text = getString(R.string.cultivo_n, numeroInicial)
             setTextColor(Color.parseColor("#5C5953"))
             textSize = 13f
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
 
         val tvEliminar = TextView(this).apply {
-            text = "✕ Quitar"
+            text = getString(R.string.quitar)
             setTextColor(Color.parseColor("#B34038"))
             textSize = 12f
             setTypeface(typeface, Typeface.BOLD)
@@ -441,15 +456,16 @@ class LoginActivity : AppCompatActivity() {
     private fun reenumerarCultivosAdicionales() {
         cultivosAdicionales.forEachIndexed { index, item ->
             val numeroReal = 3 + index
-            item.tvLabel.text = "Cultivo $numeroReal"
+            item.tvLabel.text = getString(R.string.cultivo_n, numeroReal)
         }
     }
 
-    /** "Papa → Maíz → Fríjol" de la rotación actual guardada en el backend -> lista de nombres. */
+    /** "Papa → Maíz → Fríjol" de la rotación actual guardada en el backend (siempre en español) -> ids. */
     private fun restaurarRotacion(usuario: UsuarioDetalle?): List<String>? {
         val rotaciones = usuario?.rotaciones ?: return null
         val actual = rotaciones.find { it.data?.actual == true } ?: rotaciones.firstOrNull() ?: return null
         val cultivos = actual.rotacion.split("→").map { it.trim() }.filter { it.isNotEmpty() }
+            .map { MockRepository.idCultivo(it) }
         return cultivos.takeIf { it.size >= 2 }
     }
 

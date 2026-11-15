@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name" translatable="false">FieldShift</string>
+    <string name="nav_inicio">Inicio</string>
+    <string name="nav_rotaciones">Rotaciones</string>
+    <string name="nav_mi_finca">Mi finca</string>
+    <string name="por_que_se_sugiere">Por qué se sugiere</string>
+    <string name="beneficio">Beneficio</string>
+    <string name="riesgo">Riesgo</string>
+    <string name="evidencia_nasa">Evidencia NASA</string>
+    <string name="datos_faltantes">Datos faltantes</string>
+    <string name="ver_mas">Ver más ↓</string>
+    <string name="referencia">Referencia</string>
+    <string name="alternativa_1">ALTERNATIVA 1</string>
+    <string name="alternativa_2">ALTERNATIVA 2</string>
+    <string name="rotacion_actual">Rotación actual</string>
+    <string name="ubicacion_label">Ubicación (Municipio/Departamento)</string>
+    <string name="hectareas_label">Hectáreas de la finca (ha)</string>
+    <string name="anadir_cultivo">+ Añadir cultivo de lista EcoCrop</string>
+    <string name="correo_label">Correo electrónico</string>
+    <string name="correo_hint">tu@correo.com</string>
+    <string name="ej_cultivo_papa">Papa</string>
+    <string name="ej_cultivo_maiz">Maíz</string>
+    <string name="ej_cultivo_frijol">Frijol</string>
+    <string name="ej_rotacion_3">Papa → Maíz → Frijol</string>
+    <string name="ej_rotacion_2">Papa → Maíz</string>
+    <string name="ej_rotacion_alt2">Papa → Avena → Arveja</string>
+    <string name="ej_porque_alt1">Añade una leguminosa al ciclo.</string>
+    <string name="ej_porque_actual">Punto de partida para comparar.</string>
+    <string name="ej_porque_alt2">Combina un cereal y una leguminosa.</string>
+    <string name="ej_beneficio_alt1">Aporta nitrógeno y ahorra agua.</string>
+    <string name="ej_beneficio_actual">Mantiene cultivos y equipos conocidos.</string>
+    <string name="ej_beneficio_alt2">Protege el suelo y retiene humedad.</string>
+    <string name="ej_riesgo_alt1">Sensible a heladas. Validar fechas.</string>
+    <string name="ej_riesgo_actual">Sin leguminosa; vigilar agua y suelo.</string>
+    <string name="ej_riesgo_alt2">Revisar mercado y ajuste de equipos.</string>
+    <string name="ej_evidencia">SMAP: humedad baja. POWER: seco.</string>
+    <string name="ej_faltante">Falta pH del suelo local y registro de lluvias en vereda.</string>
+    <string name="det_titulo">DETALLE DE ROTACIÓN</string>
+    <string name="det_lo_que_aporta">Lo que puede aportar</string>
+    <string name="det_consumo_agua">Consumo de agua</string>
+    <string name="det_esta_rotacion">Esta rotación</string>
+    <string name="det_salud_suelo">Salud del suelo / Nitrógeno</string>
+    <string name="det_mayor">Mayor</string>
+    <string name="det_con_leguminosa">Con leguminosa</string>
+    <string name="det_validar_epoca">Validar época de siembra con asesor local</string>
+    <string name="det_guardar">Guardar esta rotación en mi finca</string>
+    <string name="inicio_ruta">TERRA / INICIO</string>
+    <string name="ej_saludo">Hola, Elena</string>
+    <string name="inicio_vistazo">Tu finca, de un vistazo</string>
+    <string name="inicio_esta_semana">Esta semana</string>
+    <string name="inicio_hectareas">Hectáreas</string>
+    <string name="ej_hectareas_total">12 ha en total</string>
+    <string name="inicio_salud_suelo">Salud del suelo</string>
+    <string name="ej_smap_indice">SMAP · índice /100</string>
+    <string name="inicio_lluvia_7">Lluvia 7 días</string>
+    <string name="inicio_que_hacer">¿Qué quieres hacer?</string>
+    <string name="inicio_configurar">Configurar mi finca</string>
+    <string name="inicio_calcular">Calcular rotaciones</string>
+    <string name="inicio_actividad">Actividad reciente</string>
+    <string name="ej_act_titulo1">Rotación guardada</string>
+    <string name="ej_act_detalle1">Parcela Norte · Papa → Maíz → Frijol</string>
+    <string name="ej_act_fecha1">Hace 2 h</string>
+    <string name="ej_act_titulo2">Nueva previsión de lluvia</string>
+    <string name="ej_act_detalle2">18 mm para los próximos 7 días</string>
+    <string name="ej_act_fecha2">Hace 4 h</string>
+    <string name="ej_act_titulo3">Análisis de suelo añadido</string>
+    <string name="ej_act_detalle3" formatted="false">Parcela Sur · materia orgánica: 2,4%</string>
+    <string name="ej_act_fecha3">Ayer</string>
+    <string name="inicio_vision">Decide con una visión más completa</string>
+    <string name="inicio_vision_sub">Observaciones NASA + información de tu suelo</string>
+    <string name="finca_ruta">TERRA / MI FINCA</string>
+    <string name="finca_subtitulo">Tu tierra, el punto de partida.</string>
+    <string name="finca_ubicacion_superficie">Ubicación y superficie</string>
+    <string name="finca_ubicacion_hint">Ej: Tunja, Boyacá</string>
+    <string name="finca_selecciona">Selecciona tu secuencia del catálogo EcoCrop.</string>
+    <string name="finca_prioridades">Prioridades</string>
+    <string name="finca_que_importa">¿Qué es más importante para tu finca?</string>
+    <string name="chip_agua_marcado">✓  Ahorrar agua</string>
+    <string name="chip_economia">Economía</string>
+    <string name="chip_equipos">Equipos</string>
+    <string name="finca_conectado">Un análisis conectado a tu finca</string>
+    <string name="finca_combinamos">Combinamos tus prioridades con humedad del suelo y clima de NASA POWER.</string>
+    <string name="finca_analizar">Actualizar y analizar con NASA</string>
+    <string name="rot_cargando">Analizando tu finca con datos de NASA…</string>
+    <string name="rot_ruta">TERRA / ROTACIONES</string>
+    <string name="rot_proximo_ciclo">Tu próximo ciclo</string>
+    <string name="rot_comparativa">Comparativa: Tu rotación y 2 alternativas</string>
+    <string name="ej_humedad">Humedad: Baja</string>
+    <string name="ej_clima">Clima: Seco/Cálido</string>
+    <string name="rot_y_alternativas">Tu rotación y 2 alternativas</string>
+    <string name="rot_actual_titulo">TU ROTACIÓN ACTUAL</string>
+    <string name="rot_ver_detalle">Ver detalle ↗</string>
+    <string name="ej_pie_rotaciones">Datos de ejemplo · Las señales NASA orientan; valida la decisión con información local.</string>
+    <string name="login_ruta">TERRA / ACCESO</string>
+    <string name="login_titulo">Tu finca empieza aquí</string>
+    <string name="login_subtitulo">Ingresa o registra tu finca por primera vez.</string>
+    <string name="login_ingresar">Ingresar</string>
+    <string name="login_entrar">Entrar</string>
+    <string name="login_registro">Registro por primera vez</string>
+    <string name="login_nombre">Nombre</string>
+    <string name="login_nombre_hint">Tu nombre</string>
+    <string name="login_ubicacion_hint">Municipio, Departamento</string>
+    <string name="login_superficie_hint">Superficie en ha</string>
+    <string name="login_elige">Elige la secuencia del catálogo EcoCrop.</string>
+    <string name="login_cultivo_1">Cultivo 1</string>
+    <string name="login_cultivo_2">Cultivo 2</string>
+    <string name="login_guardar">Guardar y entrar a mi finca</string>
+    <string name="idioma">Idioma</string>
+    <string name="saludo">Hola, %1$s</string>
+    <string name="inicio_humedad_fuente">NASA POWER · índice /100</string>
+    <string name="act_tu_finca">Tu finca</string>
+    <string name="act_sin_conexion">Sin conexión para actividades</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="rot_datos_locales_http">Datos locales (servidor: HTTP %1$d)</string>
+    <string name="rot_datos_locales_error">Datos locales (servidor: %1$s)</string>
+    <string name="rot_humedad">Humedad: %1$s</string>
+    <string name="rot_clima">Clima: %1$s</string>
+    <string name="aviso_por_defecto">Las señales NASA orientan; valida la decisión con información local.</string>
+    <string name="fb_beneficio">Sin beneficios destacados.</string>
+    <string name="fb_riesgo">Sin riesgos críticos reportados.</string>
+    <string name="fb_evidencia">Sin evidencia disponible.</string>
+    <string name="fb_faltantes">Falta análisis de suelo local.</string>
+    <string name="alternativa_n">ALTERNATIVA %1$s</string>
+    <string name="sin_dato">Sin dato</string>
+    <string name="det_menor">Menor</string>
+    <string name="det_igual">Igual</string>
+    <string name="det_aviso_por_defecto">Herramienta de apoyo: valida estas opciones con un agrónomo local.</string>
+    <string name="ver_menos">Ver menos ↑</string>
+    <string name="ver_n_mas">Ver %1$d más ↓</string>
+    <string name="det_guardada">Rotación guardada en tu finca: %1$s</string>
+    <string name="seleccionar_cultivo">Seleccionar cultivo</string>
+    <string name="error_catalogo">No se pudo cargar el catálogo de cultivos</string>
+    <string name="error_correo">Ingresa un correo válido</string>
+    <string name="cargando_entrar">Entrando…</string>
+    <string name="error_sin_usuario">Error: el servidor no envió datos de usuario</string>
+    <string name="conectado">Conectado</string>
+    <string name="error_no_registrado">El correo no está registrado</string>
+    <string name="error_servidor">Error en el servidor (%1$d)</string>
+    <string name="error_red">Error de red: %1$s</string>
+    <string name="error_nombre">Ingresa un nombre válido</string>
+    <string name="error_ubicacion">Ingresa municipio y departamento</string>
+    <string name="error_superficie">Ingresa una superficie válida</string>
+    <string name="error_min_cultivos">Selecciona al menos 2 cultivos</string>
+    <string name="error_selecciona_cultivo_n">Selecciona el cultivo %1$d</string>
+    <string name="cargando_registro">Creando tu finca…</string>
+    <string name="registro_ok">Registro exitoso</string>
+    <string name="error_codigo">Error %1$d: %2$s</string>
+    <string name="cultivo_n">Cultivo %1$d</string>
+    <string name="quitar">✕ Quitar</string>
+    <string name="cultivo_n_nombre">Cultivo %1$d: %2$s</string>
+    <string name="se_quito">Se quitó %1$s</string>
+    <string name="minimo_cultivos">Mínimo 2 cultivos</string>
+    <string name="seleccionar_cultivo_n">Seleccionar cultivo %1$d</string>
+    <string name="anadir_cultivo_titulo">Añadir cultivo</string>
+    <string name="quitar_cultivo">Quitar cultivo</string>
+    <string name="chip_agua">Ahorrar agua</string>
+    <string name="error_sesion">Error: inicia sesión nuevamente.</string>
+    <string name="cargando_analisis">Analizando con NASA…</string>
+    <string name="analisis_ok">Análisis de NASA completado</string>
+    <string name="error_analisis">Error en el análisis (%1$d): %2$s</string>
+    <string name="desconocido">Desconocido</string>
+    <string name="error_perfil">Error al actualizar el perfil: %1$d</string>
+    <string-array name="meses_cortos">
+        <item>ene</item>
+        <item>feb</item>
+        <item>mar</item>
+        <item>abr</item>
+        <item>may</item>
+        <item>jun</item>
+        <item>jul</item>
+        <item>ago</item>
+        <item>sep</item>
+        <item>oct</item>
+        <item>nov</item>
+        <item>dic</item>
+    </string-array>
+</resources>

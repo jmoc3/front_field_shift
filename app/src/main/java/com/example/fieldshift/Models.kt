@@ -27,25 +27,37 @@ object MockRepository {
     // Ubicación a la que corresponden latFinca/lonFinca (null = aún no geocodificada)
     private var ubicacionGeocodificada: String? = null
 
-    var cultivosSeleccionados: MutableList<String> = mutableListOf("Papa", "Maíz", "Fríjol")
+    // Ids del catálogo ("papa", "maiz"): el nombre se toma del catálogo en el idioma actual
+    var cultivosSeleccionados: MutableList<String> = mutableListOf("papa", "maiz", "frijol")
     var prioridadesSeleccionadas: MutableSet<String> = mutableSetOf("agua")
 
     // Catálogo EcoCrop: viene solo de GET api/v1/cultivos (ver cargarCatalogo)
     var catalogoEcoCrop: List<CultivoItem> = emptyList()
         private set
+    private var idiomaCatalogo: String? = null
 
-    /** Descarga el catálogo una vez por sesión de la app. Devuelve false si no se pudo. */
+    /** Descarga el catálogo una vez por idioma. Devuelve false si no se pudo. */
     suspend fun cargarCatalogo(): Boolean {
-        if (catalogoEcoCrop.isNotEmpty()) return true
+        if (catalogoEcoCrop.isNotEmpty() && idiomaCatalogo == Idioma.actual()) return true
         return try {
             val respuesta = RetrofitClient.apiService.obtenerCultivos()
             val cultivos = respuesta.body().orEmpty()
-            if (respuesta.isSuccessful && cultivos.isNotEmpty()) catalogoEcoCrop = cultivos
+            if (respuesta.isSuccessful && cultivos.isNotEmpty()) {
+                catalogoEcoCrop = cultivos
+                idiomaCatalogo = Idioma.actual()
+            }
             catalogoEcoCrop.isNotEmpty()
         } catch (e: Exception) {
             false
         }
     }
+
+    /** Nombre para mostrar de un cultivo (id o nombre guardado). */
+    fun nombreCultivo(idONombre: String): String =
+        buscarCultivo(idONombre)?.name ?: idONombre.replace("_", " ").replaceFirstChar { it.uppercase() }
+
+    /** Id de un cultivo; acepta también los nombres en español guardados por versiones anteriores. */
+    fun idCultivo(idONombre: String): String = buscarCultivo(idONombre)?.id ?: normalizar(idONombre)
 
     /** Al cerrar sesión se descartan los datos del usuario (el catálogo se conserva: es común a todos). */
     fun reiniciarSesion() {
@@ -67,8 +79,7 @@ object MockRepository {
     }
 
     /** Ids que espera el backend para los cultivos seleccionados. */
-    fun idsCultivosSeleccionados(): List<String> =
-        cultivosSeleccionados.map { buscarCultivo(it)?.id ?: normalizar(it) }
+    fun idsCultivosSeleccionados(): List<String> = cultivosSeleccionados.map { idCultivo(it) }
 
     /**
      * El backend pondera por posición (0.4, 0.3, 0.2, 0.1). Se envían primero las elegidas

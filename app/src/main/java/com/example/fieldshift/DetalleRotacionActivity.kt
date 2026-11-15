@@ -58,7 +58,8 @@ class DetalleRotacionActivity : AppCompatActivity() {
         val rot = rotacionSeleccionada
 
         // --- Encabezados ---
-        val etiquetaTexto = if (rot.actual) "TU ROTACIÓN ACTUAL" else "ALTERNATIVA ${rot.id.substringAfter("opcion_", "")}".trim()
+        val etiquetaTexto = if (rot.actual) getString(R.string.rot_actual_titulo)
+            else getString(R.string.alternativa_n, rot.id.substringAfter("opcion_", "")).trim()
         findViewById<TextView>(R.id.tvEtiquetaDetalle).text = etiquetaTexto
         findViewById<TextView>(R.id.tvTituloDetalle).text = rot.nombre
         findViewById<TextView>(R.id.tvSubtituloDetalle).text =
@@ -66,12 +67,12 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         // --- Filas informativas: el primer elemento y "Ver N más" para el resto ---
         findViewById<TextView>(R.id.tvDetallePorque).text = rot.porque
-        configurarFila(R.id.tvDetalleBeneficio, R.id.tvVerMasBeneficio, rot.beneficios, "Mantiene prácticas conocidas.")
-        configurarFila(R.id.tvDetalleRiesgo, R.id.tvVerMasRiesgo, rot.riesgos, "Ninguno crítico reportado.")
-        configurarFila(R.id.tvDetalleEvidencia, R.id.tvVerMasEvidencia, rot.evidencia.map { evidenciaEnDosNiveles(it) }, "Sin evidencia disponible.")
+        configurarFila(R.id.tvDetalleBeneficio, R.id.tvVerMasBeneficio, rot.beneficios, getString(R.string.fb_beneficio))
+        configurarFila(R.id.tvDetalleRiesgo, R.id.tvVerMasRiesgo, rot.riesgos, getString(R.string.fb_riesgo))
+        configurarFila(R.id.tvDetalleEvidencia, R.id.tvVerMasEvidencia, rot.evidencia.map { evidenciaEnDosNiveles(it) }, getString(R.string.fb_evidencia))
 
         val todasLasOpciones = MockRepository.ultimoAnalisisNasa?.opciones ?: listOf(rot)
-        configurarFila(R.id.tvDetalleDatosFaltantes, R.id.tvVerMasDatosFaltantes, rot.vaciosOrdenados(todasLasOpciones), "Falta análisis de suelo local detallado.")
+        configurarFila(R.id.tvDetalleDatosFaltantes, R.id.tvVerMasDatosFaltantes, rot.vaciosOrdenados(todasLasOpciones), getString(R.string.fb_faltantes))
 
         // --- Consumo de agua: barras relativas a la mayor de las dos ---
         val agua = rot.aporte?.agua
@@ -85,7 +86,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
             else -> "$cambioAgua%"
         }
         findViewById<TextView>(R.id.tvAguaReferencia).text = referenciaAgua.toString()
-        findViewById<TextView>(R.id.tvAhorroAguaValor).text = valorAgua?.toString() ?: "Sin dato"
+        findViewById<TextView>(R.id.tvAhorroAguaValor).text = valorAgua?.toString() ?: getString(R.string.sin_dato)
 
         val maxAgua = maxOf(referenciaAgua, valorAgua ?: 0).coerceAtLeast(1).toFloat()
         ajustarBarra(R.id.barraAguaReferencia, referenciaAgua / maxAgua)
@@ -93,16 +94,22 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         // --- Salud del suelo (0–1) ---
         val suelo = rot.aporte?.suelo
-        findViewById<TextView>(R.id.tvSaludSueloTexto).text =
-            suelo?.nivel?.replaceFirstChar { it.uppercase() } ?: "Igual"
-        findViewById<TextView>(R.id.tvSueloRotacionLabel).text = "Esta rotación"
+        // El backend envía el nivel como clave fija ("mayor", "menor", "igual")
+        findViewById<TextView>(R.id.tvSaludSueloTexto).text = getString(
+            when (suelo?.nivel) {
+                "mayor" -> R.string.det_mayor
+                "menor" -> R.string.det_menor
+                else -> R.string.det_igual
+            }
+        )
+        findViewById<TextView>(R.id.tvSueloRotacionLabel).text = getString(R.string.det_esta_rotacion)
         ajustarBarra(R.id.barraSueloReferencia, (suelo?.referencia ?: 0.0).toFloat())
         ajustarBarra(R.id.barraSueloRotacion, (suelo?.rotacion ?: 0.0).toFloat())
 
         // --- Aviso / Alerta ---
         val aviso = MockRepository.ultimoAnalisisNasa?.aviso
         findViewById<TextView>(R.id.tvAlertaDetalle).text =
-            if (!aviso.isNullOrBlank()) aviso else "Herramienta de apoyo: valida estas opciones con un agrónomo local."
+            if (!aviso.isNullOrBlank()) aviso else getString(R.string.det_aviso_por_defecto)
     }
 
     /** Muestra el primer elemento; si hay más, "Ver N más ↓" despliega la lista con viñetas. */
@@ -124,7 +131,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
                     acc.append("• ").append(item)
                 }
             } else items[0]
-            verMas.text = if (expandido) "Ver menos ↑" else "Ver ${items.size - 1} más ↓"
+            verMas.text = if (expandido) getString(R.string.ver_menos) else getString(R.string.ver_n_mas, items.size - 1)
         }
 
         verMas.visibility = View.VISIBLE
@@ -181,9 +188,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
         }
     }
 
-    private fun formatearNombreCultivo(idONombre: String): String =
-        MockRepository.buscarCultivo(idONombre)?.name
-            ?: idONombre.replace("_", " ").replaceFirstChar { it.uppercase() }
+    private fun formatearNombreCultivo(idONombre: String): String = MockRepository.nombreCultivo(idONombre)
 
     // Íconos por grupo de cultivo (ids de data/cultivos.json del backend)
     private val leguminosas = setOf(
@@ -238,18 +243,18 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         // Botón "Guardar esta rotación en mi finca"
         findViewById<View>(R.id.btnGuardarRotacion)?.setOnClickListener {
-            val nombresFormateados = rotacionSeleccionada.cultivos.map { formatearNombreCultivo(it) }
-            MockRepository.cultivosSeleccionados = nombresFormateados.toMutableList()
+            val ids = rotacionSeleccionada.cultivos.map { MockRepository.idCultivo(it) }
+            MockRepository.cultivosSeleccionados = ids.toMutableList()
             // La rotación actual cambió: el próximo ingreso a Rotaciones pide un análisis nuevo
             MockRepository.ultimoAnalisisNasa = null
 
             val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
-            prefs.edit().putString("user_cultivos", nombresFormateados.joinToString("||")).apply()
+            prefs.edit().putString("user_cultivos", ids.joinToString("||")).apply()
             guardarRotacionEnServidor(prefs.getInt("user_id", -1))
 
             Toast.makeText(
                 this,
-                "Rotación guardada en tu finca: ${rotacionSeleccionada.nombre}",
+                getString(R.string.det_guardada, rotacionSeleccionada.nombre),
                 Toast.LENGTH_LONG
             ).show()
 

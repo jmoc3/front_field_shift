@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.06"
-                android:text="TERRA / MI FINCA"
+                android:text="@string/finca_ruta"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
 
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Mi finca"
+                android:text="@string/nav_mi_finca"
                 android:textColor="#171715"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="24dp"
-                android:text="Tu tierra, el punto de partida."
+                android:text="@string/finca_subtitulo"
                 android:textColor="#7A766E"
                 android:textSize="14sp" />
 
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="Ubicación y superficie"
+                android:text="@string/finca_ubicacion_superficie"
                 android:textColor="#171715"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
-                android:text="Ubicación (Municipio/Departamento)"
+                android:text="@string/ubicacion_label"
                 android:textColor="#7A766E"
                 android:textSize="12sp" />
 
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:hint="Ej: Tunja, Boyacá"
+                    android:hint="@string/finca_ubicacion_hint"
                     android:importantForAutofill="no"
                     android:inputType="textCapWords|textNoSuggestions"
                     android:paddingHorizontal="16dp"
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
-                android:text="Hectáreas de la finca (ha)"
+                android:text="@string/hectareas_label"
                 android:textColor="#7A766E"
                 android:textSize="12sp" />
 
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rotación actual"
+                android:text="@string/rotacion_actual"
                 android:textColor="#171715"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="14dp"
-                android:text="Selecciona tu secuencia del catálogo EcoCrop."
+                android:text="@string/finca_selecciona"
                 android:textColor="#7A766E"
                 android:textSize="12sp" />
 
@@ -187,7 +187,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
-                    android:text="+ Añadir cultivo de lista EcoCrop"
+                    android:text="@string/anadir_cultivo"
                     android:textColor="#171715"
                     android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
@@ -196,7 +196,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Prioridades"
+                android:text="@string/finca_prioridades"
                 android:textColor="#171715"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="14dp"
-                android:text="¿Qué es más importante para tu finca?"
+                android:text="@string/finca_que_importa"
                 android:textColor="#7A766E"
                 android:textSize="12sp" />
 
@@ -238,7 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="✓  Ahorrar agua"
+                        android:text="@string/chip_agua_marcado"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -264,7 +264,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Economía"
+                        android:text="@string/chip_economia"
                         android:textColor="#171715"
                         android:textSize="12sp" />
                 </com.google.android.material.card.MaterialCardView>
@@ -289,7 +289,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Equipos"
+                        android:text="@string/chip_equipos"
                         android:textColor="#171715"
                         android:textSize="12sp" />
                 </com.google.android.material.card.MaterialCardView>
@@ -314,7 +314,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Un análisis conectado a tu finca"
+                        android:text="@string/finca_conectado"
                         android:textColor="#171715"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -324,7 +324,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:lineSpacingExtra="2dp"
-                        android:text="Combinamos tus prioridades con humedad del suelo y clima de NASA POWER."
+                        android:text="@string/finca_combinamos"
                         android:textColor="#7A766E"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -346,7 +346,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Actualizar y analizar con NASA"
+                    android:text="@string/finca_analizar"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -390,7 +390,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Inicio"
+                android:text="@string/nav_inicio"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -415,7 +415,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Rotaciones"
+                android:text="@string/nav_rotaciones"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -438,7 +438,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Mi finca"
+                android:text="@string/nav_mi_finca"
                 android:textColor="#171715"
                 android:textSize="11sp"
                 android:textStyle="bold" />

@@ -50,6 +50,10 @@ class MiFincaActivity : AppCompatActivity() {
         cultivosOriginales = MockRepository.cultivosSeleccionados.toList()
 
         renderizarSelectoresCultivos()
+        // Si el catálogo falta o está en otro idioma, se recarga y se repintan los nombres
+        lifecycleScope.launch {
+            if (withContext(Dispatchers.IO) { MockRepository.cargarCatalogo() }) renderizarSelectoresCultivos()
+        }
         configurarBotones()
         configurarChipsPrioridades()
         configurarNavegacion()
@@ -59,7 +63,8 @@ class MiFincaActivity : AppCompatActivity() {
         containerCultivos.removeAllViews()
         val densidad = resources.displayMetrics.density
 
-        MockRepository.cultivosSeleccionados.forEachIndexed { index, nombreCultivo ->
+        MockRepository.cultivosSeleccionados.forEachIndexed { index, idCultivo ->
+            val nombreCultivo = MockRepository.nombreCultivo(idCultivo)
             val card = MaterialCardView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -89,7 +94,7 @@ class MiFincaActivity : AppCompatActivity() {
 
             val tvLabel = TextView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                text = "Cultivo ${index + 1}: $nombreCultivo"
+                text = getString(R.string.cultivo_n_nombre, index + 1, nombreCultivo)
                 setTextColor(Color.parseColor("#171715"))
                 textSize = 14f
             }
@@ -115,9 +120,9 @@ class MiFincaActivity : AppCompatActivity() {
                     val eliminado = MockRepository.cultivosSeleccionados.removeAt(index)
                     descartarAnalisis()
                     renderizarSelectoresCultivos()
-                    Toast.makeText(this, "Se quitó $eliminado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.se_quito, MockRepository.nombreCultivo(eliminado)), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Mínimo 2 cultivos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.minimo_cultivos, Toast.LENGTH_SHORT).show()
                 }
                 true
             }
@@ -127,38 +132,37 @@ class MiFincaActivity : AppCompatActivity() {
     }
 
     private fun mostrarSelectorEcoCrop(indiceEditar: Int?) {
-        // El catálogo viene de GET api/v1/cultivos; si aún no está, se pide antes de abrir el selector
-        if (MockRepository.catalogoEcoCrop.isEmpty()) {
-            lifecycleScope.launch {
-                if (withContext(Dispatchers.IO) { MockRepository.cargarCatalogo() }) {
-                    mostrarSelectorEcoCrop(indiceEditar)
-                } else {
-                    Toast.makeText(this@MiFincaActivity, "No se pudo cargar el catálogo de cultivos", Toast.LENGTH_SHORT).show()
-                }
+        // El catálogo viene de GET api/v1/cultivos (en el idioma actual); se pide si aún no está
+        lifecycleScope.launch {
+            if (!withContext(Dispatchers.IO) { MockRepository.cargarCatalogo() }) {
+                Toast.makeText(this@MiFincaActivity, R.string.error_catalogo, Toast.LENGTH_SHORT).show()
+                return@launch
             }
-            return
+            abrirSelectorEcoCrop(indiceEditar)
         }
+    }
 
-        val cultivoActual = if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] else null
-        val opcionesMostradas = MockRepository.catalogoEcoCrop.map { if (it.name == cultivoActual) "✓  ${it.name}" else it.name }.toTypedArray()
+    private fun abrirSelectorEcoCrop(indiceEditar: Int?) {
+        val cultivoActual = indiceEditar?.let { MockRepository.idCultivo(MockRepository.cultivosSeleccionados[it]) }
+        val opcionesMostradas = MockRepository.catalogoEcoCrop.map { if (it.id == cultivoActual) "✓  ${it.name}" else it.name }.toTypedArray()
 
         val builder = AlertDialog.Builder(this)
-            .setTitle(if (indiceEditar != null) "Seleccionar Cultivo ${indiceEditar + 1}" else "Añadir cultivo")
+            .setTitle(if (indiceEditar != null) getString(R.string.seleccionar_cultivo_n, indiceEditar + 1) else getString(R.string.anadir_cultivo_titulo))
             .setItems(opcionesMostradas) { _, which ->
-                val elegido = MockRepository.catalogoEcoCrop[which].name
+                val elegido = MockRepository.catalogoEcoCrop[which].id
                 if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] = elegido
                 else MockRepository.cultivosSeleccionados.add(elegido)
                 descartarAnalisis()
                 renderizarSelectoresCultivos()
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.cancelar, null)
 
         if (indiceEditar != null && MockRepository.cultivosSeleccionados.size > 2) {
-            builder.setNeutralButton("Quitar cultivo") { _, _ ->
+            builder.setNeutralButton(R.string.quitar_cultivo) { _, _ ->
                 val eliminado = MockRepository.cultivosSeleccionados.removeAt(indiceEditar)
                 descartarAnalisis()
                 renderizarSelectoresCultivos()
-                Toast.makeText(this, "Se quitó $eliminado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.se_quito, MockRepository.nombreCultivo(eliminado)), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -182,9 +186,9 @@ class MiFincaActivity : AppCompatActivity() {
         val tvChipEquipos = findViewById<TextView>(R.id.tvChipEquipos)
 
         fun actualizarVistaChips() {
-            aplicarEstiloChip(chipAgua, tvChipAgua, "Ahorrar agua", MockRepository.prioridadesSeleccionadas.contains("agua"))
-            aplicarEstiloChip(chipEconomia, tvChipEconomia, "Economía", MockRepository.prioridadesSeleccionadas.contains("economia"))
-            aplicarEstiloChip(chipEquipos, tvChipEquipos, "Equipos", MockRepository.prioridadesSeleccionadas.contains("equipos"))
+            aplicarEstiloChip(chipAgua, tvChipAgua, getString(R.string.chip_agua), MockRepository.prioridadesSeleccionadas.contains("agua"))
+            aplicarEstiloChip(chipEconomia, tvChipEconomia, getString(R.string.chip_economia), MockRepository.prioridadesSeleccionadas.contains("economia"))
+            aplicarEstiloChip(chipEquipos, tvChipEquipos, getString(R.string.chip_equipos), MockRepository.prioridadesSeleccionadas.contains("equipos"))
         }
 
         chipAgua.setOnClickListener { alternarPrioridad("agua"); actualizarVistaChips() }
@@ -229,7 +233,7 @@ class MiFincaActivity : AppCompatActivity() {
         val hectareasNum = etHectareas.text.toString().toDoubleOrNull()
 
         if (hectareasNum == null || hectareasNum <= 0) {
-            etHectareas.error = "Ingresa una superficie válida"
+            etHectareas.error = getString(R.string.error_superficie)
             return
         }
 
@@ -237,12 +241,12 @@ class MiFincaActivity : AppCompatActivity() {
         val usuarioId = prefs.getInt("user_id", -1)
 
         if (usuarioId == -1) {
-            Toast.makeText(this, "Error: Inicia sesión nuevamente.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.error_sesion, Toast.LENGTH_LONG).show()
             return
         }
 
-        val todosLosCultivos = MockRepository.cultivosSeleccionados.toList()
-        btnActualizarNasa.mostrarCargando(true, "Analizando con NASA…")
+        val todosLosCultivos = MockRepository.idsCultivosSeleccionados()
+        btnActualizarNasa.mostrarCargando(true, getString(R.string.cargando_analisis))
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -282,24 +286,24 @@ class MiFincaActivity : AppCompatActivity() {
                             // GUARDAMOS EL RESULTADO PARA QUE LO LEA LA SIGUIENTE PANTALLA
                             MockRepository.ultimoAnalisisNasa = respuestaAnalisis.body()
 
-                            Toast.makeText(this@MiFincaActivity, "Análisis de NASA completado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MiFincaActivity, R.string.analisis_ok, Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@MiFincaActivity, RotacionesActivity::class.java))
                             finish()
                         } else {
-                            val errorServidor = respuestaAnalisis.errorBody()?.string() ?: "Desconocido"
-                            Toast.makeText(this@MiFincaActivity, "Error análisis (${respuestaAnalisis.code()}): $errorServidor", Toast.LENGTH_LONG).show()
+                            val errorServidor = respuestaAnalisis.errorBody()?.string() ?: getString(R.string.desconocido)
+                            Toast.makeText(this@MiFincaActivity, getString(R.string.error_analisis, respuestaAnalisis.code(), errorServidor), Toast.LENGTH_LONG).show()
                         }
                     }
                 } else {
                     withContext(Dispatchers.Main) {
                         btnActualizarNasa.mostrarCargando(false, "")
-                        Toast.makeText(this@MiFincaActivity, "Error al actualizar perfil: ${respuestaUser.code()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MiFincaActivity, getString(R.string.error_perfil, respuestaUser.code()), Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     btnActualizarNasa.mostrarCargando(false, "")
-                    Toast.makeText(this@MiFincaActivity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MiFincaActivity, getString(R.string.error_red, e.message), Toast.LENGTH_LONG).show()
                 }
             }
         }

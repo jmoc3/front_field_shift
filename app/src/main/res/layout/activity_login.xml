@@ -18,20 +18,68 @@
         android:paddingTop="24dp"
         android:paddingBottom="36dp">
 
-        <!-- Encabezado superior -->
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Encabezado superior, con el cambio de idioma a la derecha -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TERRA / ACCESO"
-            android:textColor="#6E6B64"
-            android:textSize="12sp"
-            android:letterSpacing="0.04"
-            android:layout_marginBottom="6dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/login_ruta"
+                android:textColor="#6E6B64"
+                android:textSize="12sp"
+                android:letterSpacing="0.04" />
+
+            <!-- Selector de idioma: el activo va relleno en negro, como los chips de prioridades -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeColor="#E2DFD7"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/tvIdiomaEs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ES"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="5dp"
+                        android:contentDescription="Español" />
+
+                    <TextView
+                        android:id="@+id/tvIdiomaEn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EN"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="5dp"
+                        android:contentDescription="English" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tu finca empieza aquí"
+            android:text="@string/login_titulo"
             android:textColor="#171715"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -40,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingresa o registra tu finca por primera vez."
+            android:text="@string/login_subtitulo"
             android:textColor="#6E6B64"
             android:textSize="15sp"
             android:layout_marginBottom="22dp" />
@@ -64,7 +112,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ingresar"
+                    android:text="@string/login_ingresar"
                     android:textColor="#171715"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -73,7 +121,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correo electrónico"
+                    android:text="@string/correo_label"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -83,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
-                    android:hint="tu@correo.com"
+                    android:hint="@string/correo_hint"
                     android:importantForAutofill="no"
                     android:inputType="textEmailAddress|textNoSuggestions"
                     android:paddingHorizontal="16dp"
@@ -107,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Entrar"
+                        android:text="@string/login_entrar"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -135,7 +183,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Registro por primera vez"
+                    android:text="@string/login_registro"
                     android:textColor="#171715"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -145,7 +193,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre"
+                    android:text="@string/login_nombre"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -155,7 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
-                    android:hint="Tu nombre"
+                    android:hint="@string/login_nombre_hint"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName|textCapWords|textNoSuggestions"
                     android:paddingHorizontal="16dp"
@@ -168,7 +216,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correo electrónico"
+                    android:text="@string/correo_label"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -178,7 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
-                    android:hint="tu@correo.com"
+                    android:hint="@string/correo_hint"
                     android:importantForAutofill="no"
                     android:inputType="textEmailAddress|textNoSuggestions"
                     android:paddingHorizontal="16dp"
@@ -191,7 +239,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ubicación (Municipio/Departamento)"
+                    android:text="@string/ubicacion_label"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -201,7 +249,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
-                    android:hint="Municipio, Departamento"
+                    android:hint="@string/login_ubicacion_hint"
                     android:importantForAutofill="no"
                     android:inputType="textCapWords|textNoSuggestions"
                     android:paddingHorizontal="16dp"
@@ -214,7 +262,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hectáreas de la finca (ha)"
+                    android:text="@string/hectareas_label"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -224,7 +272,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_input_rounded"
-                    android:hint="Superficie en ha"
+                    android:hint="@string/login_superficie_hint"
                     android:importantForAutofill="no"
                     android:inputType="numberDecimal"
                     android:paddingHorizontal="16dp"
@@ -237,7 +285,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rotación actual"
+                    android:text="@string/rotacion_actual"
                     android:textColor="#171715"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -246,7 +294,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Elige la secuencia del catálogo EcoCrop."
+                    android:text="@string/login_elige"
                     android:textColor="#6E6B64"
                     android:textSize="13sp"
                     android:layout_marginBottom="16dp" />
@@ -255,7 +303,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cultivo 1"
+                    android:text="@string/login_cultivo_1"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -288,7 +336,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cultivo 2"
+                    android:text="@string/login_cultivo_2"
                     android:textColor="#5C5953"
                     android:textSize="13sp"
                     android:layout_marginBottom="8dp" />
@@ -343,7 +391,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
-                        android:text="+ Añadir cultivo de lista EcoCrop"
+                        android:text="@string/anadir_cultivo"
                         android:textColor="#171715"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -366,7 +414,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Guardar y entrar a mi finca"
+                        android:text="@string/login_guardar"
                         android:textColor="@android:color/white"
                         android:textSize="15sp"
                         android:textStyle="bold" />

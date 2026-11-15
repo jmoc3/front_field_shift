@@ -25,7 +25,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:paddingHorizontal="40dp"
-        android:text="Analizando tu finca con datos de NASA…"
+        android:text="@string/rot_cargando"
         android:textColor="#7A766E"
         android:textSize="13sp"
         android:visibility="gone" />
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.06"
-                android:text="TERRA / ROTACIONES"
+                android:text="@string/rot_ruta"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Tu próximo ciclo"
+                android:text="@string/rot_proximo_ciclo"
                 android:textColor="#171715"
                 android:textSize="28sp"
                 android:textStyle="bold" />
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Comparativa: Tu rotación y 2 alternativas"
+                android:text="@string/rot_comparativa"
                 android:textColor="#7A766E"
                 android:textSize="13sp" />
 
@@ -128,7 +128,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="1dp"
-                                android:text="Humedad: Baja"
+                                android:text="@string/ej_humedad"
                                 android:textColor="#171715"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -183,7 +183,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="1dp"
-                                android:text="Clima: Seco/Cálido"
+                                android:text="@string/ej_clima"
                                 android:textColor="#171715"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
@@ -198,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
                 android:layout_marginBottom="14dp"
-                android:text="Tu rotación y 2 alternativas"
+                android:text="@string/rot_y_alternativas"
                 android:textColor="#171715"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -225,7 +225,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.06"
-                        android:text="TU ROTACIÓN ACTUAL"
+                        android:text="@string/rot_actual_titulo"
                         android:textColor="#7A766E"
                         android:textSize="10sp"
                         android:textStyle="bold" />
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="14dp"
-                        android:text="Papa → Maíz"
+                        android:text="@string/ej_rotacion_2"
                         android:textColor="#171715"
                         android:textSize="19sp"
                         android:textStyle="bold" />
@@ -251,7 +251,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Por qué se sugiere"
+                            android:text="@string/por_que_se_sugiere"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -260,7 +260,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Punto de partida para comparar."
+                            android:text="@string/ej_porque_actual"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -275,7 +275,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Beneficio"
+                            android:text="@string/beneficio"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -284,7 +284,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Mantiene cultivos y equipos conocidos."
+                            android:text="@string/ej_beneficio_actual"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -299,7 +299,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Riesgo"
+                            android:text="@string/riesgo"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -308,7 +308,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Sin leguminosa; vigilar agua y suelo."
+                            android:text="@string/ej_riesgo_actual"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -323,7 +323,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Evidencia NASA"
+                            android:text="@string/evidencia_nasa"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -332,7 +332,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:text="@string/ej_evidencia"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -346,7 +346,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Datos faltantes"
+                            android:text="@string/datos_faltantes"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -355,7 +355,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:text="@string/ej_faltante"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -388,7 +388,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:letterSpacing="0.06"
-                            android:text="ALTERNATIVA 1"
+                            android:text="@string/alternativa_1"
                             android:textColor="#7A766E"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -403,7 +403,7 @@
                             android:focusable="true"
                             android:paddingStart="6dp"
                             android:paddingBottom="2dp"
-                            android:text="Ver detalle ↗"
+                            android:text="@string/rot_ver_detalle"
                             android:textColor="#171715"
                             android:textSize="11.5sp"
                             android:textStyle="bold" />
@@ -415,7 +415,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="14dp"
-                        android:text="Papa → Maíz → Frijol"
+                        android:text="@string/ej_rotacion_3"
                         android:textColor="#171715"
                         android:textSize="19sp"
                         android:textStyle="bold" />
@@ -430,7 +430,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Por qué se sugiere"
+                            android:text="@string/por_que_se_sugiere"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -439,7 +439,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Añade una leguminosa al ciclo."
+                            android:text="@string/ej_porque_alt1"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -454,7 +454,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Beneficio"
+                            android:text="@string/beneficio"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -463,7 +463,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Aporta nitrógeno y ahorra agua."
+                            android:text="@string/ej_beneficio_alt1"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -478,7 +478,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Riesgo"
+                            android:text="@string/riesgo"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -487,7 +487,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Sensible a heladas. Validar fechas."
+                            android:text="@string/ej_riesgo_alt1"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -502,7 +502,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Evidencia NASA"
+                            android:text="@string/evidencia_nasa"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -511,7 +511,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:text="@string/ej_evidencia"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -525,7 +525,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Datos faltantes"
+                            android:text="@string/datos_faltantes"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -534,7 +534,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:text="@string/ej_faltante"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -567,7 +567,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:letterSpacing="0.06"
-                            android:text="ALTERNATIVA 2"
+                            android:text="@string/alternativa_2"
                             android:textColor="#7A766E"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -582,7 +582,7 @@
                             android:focusable="true"
                             android:paddingStart="6dp"
                             android:paddingBottom="2dp"
-                            android:text="Ver detalle ↗"
+                            android:text="@string/rot_ver_detalle"
                             android:textColor="#171715"
                             android:textSize="11.5sp"
                             android:textStyle="bold" />
@@ -594,7 +594,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="14dp"
-                        android:text="Papa → Avena → Arveja"
+                        android:text="@string/ej_rotacion_alt2"
                         android:textColor="#171715"
                         android:textSize="19sp"
                         android:textStyle="bold" />
@@ -609,7 +609,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Por qué se sugiere"
+                            android:text="@string/por_que_se_sugiere"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -618,7 +618,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Combina un cereal y una leguminosa."
+                            android:text="@string/ej_porque_alt2"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -633,7 +633,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Beneficio"
+                            android:text="@string/beneficio"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -642,7 +642,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Protege el suelo y retiene humedad."
+                            android:text="@string/ej_beneficio_alt2"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -657,7 +657,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Riesgo"
+                            android:text="@string/riesgo"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -666,7 +666,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Revisar mercado y ajuste de equipos."
+                            android:text="@string/ej_riesgo_alt2"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -681,7 +681,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Evidencia NASA"
+                            android:text="@string/evidencia_nasa"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -690,7 +690,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="SMAP: humedad baja. POWER: seco."
+                            android:text="@string/ej_evidencia"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -704,7 +704,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Datos faltantes"
+                            android:text="@string/datos_faltantes"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -713,7 +713,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                            android:text="@string/ej_faltante"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -728,7 +728,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="18dp"
                 android:lineSpacingExtra="2dp"
-                android:text="Datos de ejemplo · Las señales NASA orientan; valida la decisión con información local."
+                android:text="@string/ej_pie_rotaciones"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
 
@@ -770,7 +770,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Inicio"
+                android:text="@string/nav_inicio"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -793,7 +793,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Rotaciones"
+                android:text="@string/nav_rotaciones"
                 android:textColor="#171715"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -819,7 +819,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Mi finca"
+                android:text="@string/nav_mi_finca"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>

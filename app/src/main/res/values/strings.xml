@@ -1,3 +1,178 @@
 <resources>
-    <string name="app_name">FieldShift</string>
+    <string name="app_name" translatable="false">FieldShift</string>
+    <string name="nav_inicio">Home</string>
+    <string name="nav_rotaciones">Rotations</string>
+    <string name="nav_mi_finca">My farm</string>
+    <string name="por_que_se_sugiere">Why it\'s suggested</string>
+    <string name="beneficio">Benefit</string>
+    <string name="riesgo">Risk</string>
+    <string name="evidencia_nasa">NASA evidence</string>
+    <string name="datos_faltantes">Missing data</string>
+    <string name="ver_mas">See more ↓</string>
+    <string name="referencia">Reference</string>
+    <string name="alternativa_1">ALTERNATIVE 1</string>
+    <string name="alternativa_2">ALTERNATIVE 2</string>
+    <string name="rotacion_actual">Current rotation</string>
+    <string name="ubicacion_label">Location (Municipality/Department)</string>
+    <string name="hectareas_label">Farm hectares (ha)</string>
+    <string name="anadir_cultivo">+ Add crop from EcoCrop list</string>
+    <string name="correo_label">Email</string>
+    <string name="correo_hint">you@email.com</string>
+    <string name="ej_cultivo_papa">Potato</string>
+    <string name="ej_cultivo_maiz">Maize</string>
+    <string name="ej_cultivo_frijol">Bean</string>
+    <string name="ej_rotacion_3">Potato → Maize → Bean</string>
+    <string name="ej_rotacion_2">Potato → Maize</string>
+    <string name="ej_rotacion_alt2">Potato → Oats → Pea</string>
+    <string name="ej_porque_alt1">Adds a legume to the cycle.</string>
+    <string name="ej_porque_actual">Starting point for comparison.</string>
+    <string name="ej_porque_alt2">Combines a cereal and a legume.</string>
+    <string name="ej_beneficio_alt1">Adds nitrogen and saves water.</string>
+    <string name="ej_beneficio_actual">Keeps familiar crops and equipment.</string>
+    <string name="ej_beneficio_alt2">Protects the soil and retains moisture.</string>
+    <string name="ej_riesgo_alt1">Frost sensitive. Check dates.</string>
+    <string name="ej_riesgo_actual">No legume; watch water and soil.</string>
+    <string name="ej_riesgo_alt2">Check market and equipment fit.</string>
+    <string name="ej_evidencia">SMAP: low moisture. POWER: dry.</string>
+    <string name="ej_faltante">Missing local soil pH and rainfall records.</string>
+    <string name="det_titulo">ROTATION DETAIL</string>
+    <string name="det_lo_que_aporta">What it can contribute</string>
+    <string name="det_consumo_agua">Water use</string>
+    <string name="det_esta_rotacion">This rotation</string>
+    <string name="det_salud_suelo">Soil health / Nitrogen</string>
+    <string name="det_mayor">Higher</string>
+    <string name="det_con_leguminosa">With legume</string>
+    <string name="det_validar_epoca">Check the planting season with a local advisor</string>
+    <string name="det_guardar">Save this rotation to my farm</string>
+    <string name="inicio_ruta">TERRA / HOME</string>
+    <string name="ej_saludo">Hi, Elena</string>
+    <string name="inicio_vistazo">Your farm at a glance</string>
+    <string name="inicio_esta_semana">This week</string>
+    <string name="inicio_hectareas">Hectares</string>
+    <string name="ej_hectareas_total">12 ha in total</string>
+    <string name="inicio_salud_suelo">Soil health</string>
+    <string name="ej_smap_indice">SMAP · index /100</string>
+    <string name="inicio_lluvia_7">7-day rain</string>
+    <string name="inicio_que_hacer">What do you want to do?</string>
+    <string name="inicio_configurar">Set up my farm</string>
+    <string name="inicio_calcular">Calculate rotations</string>
+    <string name="inicio_actividad">Recent activity</string>
+    <string name="ej_act_titulo1">Rotation saved</string>
+    <string name="ej_act_detalle1">North plot · Potato → Maize → Bean</string>
+    <string name="ej_act_fecha1">2 h ago</string>
+    <string name="ej_act_titulo2">New rain forecast</string>
+    <string name="ej_act_detalle2">18 mm for the next 7 days</string>
+    <string name="ej_act_fecha2">4 h ago</string>
+    <string name="ej_act_titulo3">Soil analysis added</string>
+    <string name="ej_act_detalle3" formatted="false">South plot · organic matter: 2.4%</string>
+    <string name="ej_act_fecha3">Yesterday</string>
+    <string name="inicio_vision">Decide with a fuller picture</string>
+    <string name="inicio_vision_sub">NASA observations + your soil information</string>
+    <string name="finca_ruta">TERRA / MY FARM</string>
+    <string name="finca_subtitulo">Your land, the starting point.</string>
+    <string name="finca_ubicacion_superficie">Location and area</string>
+    <string name="finca_ubicacion_hint">E.g.: Tunja, Boyacá</string>
+    <string name="finca_selecciona">Select your sequence from the EcoCrop catalog.</string>
+    <string name="finca_prioridades">Priorities</string>
+    <string name="finca_que_importa">What matters most for your farm?</string>
+    <string name="chip_agua_marcado">✓  Save water</string>
+    <string name="chip_economia">Economy</string>
+    <string name="chip_equipos">Equipment</string>
+    <string name="finca_conectado">An analysis connected to your farm</string>
+    <string name="finca_combinamos">We combine your priorities with soil moisture and climate data from NASA POWER.</string>
+    <string name="finca_analizar">Update and analyze with NASA</string>
+    <string name="rot_cargando">Analyzing your farm with NASA data…</string>
+    <string name="rot_ruta">TERRA / ROTATIONS</string>
+    <string name="rot_proximo_ciclo">Your next cycle</string>
+    <string name="rot_comparativa">Comparison: your rotation and 2 alternatives</string>
+    <string name="ej_humedad">Moisture: Low</string>
+    <string name="ej_clima">Climate: Dry/Warm</string>
+    <string name="rot_y_alternativas">Your rotation and 2 alternatives</string>
+    <string name="rot_actual_titulo">YOUR CURRENT ROTATION</string>
+    <string name="rot_ver_detalle">See detail ↗</string>
+    <string name="ej_pie_rotaciones">Sample data · NASA signals guide you; validate the decision with local information.</string>
+    <string name="login_ruta">TERRA / ACCESS</string>
+    <string name="login_titulo">Your farm starts here</string>
+    <string name="login_subtitulo">Sign in or register your farm for the first time.</string>
+    <string name="login_ingresar">Sign in</string>
+    <string name="login_entrar">Log in</string>
+    <string name="login_registro">First-time registration</string>
+    <string name="login_nombre">Name</string>
+    <string name="login_nombre_hint">Your name</string>
+    <string name="login_ubicacion_hint">Municipality, Department</string>
+    <string name="login_superficie_hint">Area in ha</string>
+    <string name="login_elige">Choose the sequence from the EcoCrop catalog.</string>
+    <string name="login_cultivo_1">Crop 1</string>
+    <string name="login_cultivo_2">Crop 2</string>
+    <string name="login_guardar">Save and enter my farm</string>
+    <string name="idioma">Language</string>
+    <string name="saludo">Hi, %1$s</string>
+    <string name="inicio_humedad_fuente">NASA POWER · index /100</string>
+    <string name="act_tu_finca">Your farm</string>
+    <string name="act_sin_conexion">No connection to load activity</string>
+    <string name="cerrar_sesion">Log out</string>
+    <string name="cancelar">Cancel</string>
+    <string name="rot_datos_locales_http">Local data (server: HTTP %1$d)</string>
+    <string name="rot_datos_locales_error">Local data (server: %1$s)</string>
+    <string name="rot_humedad">Moisture: %1$s</string>
+    <string name="rot_clima">Climate: %1$s</string>
+    <string name="aviso_por_defecto">NASA signals guide you; validate the decision with local information.</string>
+    <string name="fb_beneficio">No notable benefits.</string>
+    <string name="fb_riesgo">No critical risks reported.</string>
+    <string name="fb_evidencia">No evidence available.</string>
+    <string name="fb_faltantes">Missing local soil analysis.</string>
+    <string name="alternativa_n">ALTERNATIVE %1$s</string>
+    <string name="sin_dato">No data</string>
+    <string name="det_menor">Lower</string>
+    <string name="det_igual">Same</string>
+    <string name="det_aviso_por_defecto">Support tool: check these options with a local agronomist.</string>
+    <string name="ver_menos">See less ↑</string>
+    <string name="ver_n_mas">See %1$d more ↓</string>
+    <string name="det_guardada">Rotation saved to your farm: %1$s</string>
+    <string name="seleccionar_cultivo">Select crop</string>
+    <string name="error_catalogo">Could not load the crop catalog</string>
+    <string name="error_correo">Enter a valid email</string>
+    <string name="cargando_entrar">Signing in…</string>
+    <string name="error_sin_usuario">Error: the server sent no user data</string>
+    <string name="conectado">Connected</string>
+    <string name="error_no_registrado">This email is not registered</string>
+    <string name="error_servidor">Server error (%1$d)</string>
+    <string name="error_red">Network error: %1$s</string>
+    <string name="error_nombre">Enter a valid name</string>
+    <string name="error_ubicacion">Enter municipality and department</string>
+    <string name="error_superficie">Enter a valid area</string>
+    <string name="error_min_cultivos">Select at least 2 crops</string>
+    <string name="error_selecciona_cultivo_n">Select crop %1$d</string>
+    <string name="cargando_registro">Creating your farm…</string>
+    <string name="registro_ok">Registration successful</string>
+    <string name="error_codigo">Error %1$d: %2$s</string>
+    <string name="cultivo_n">Crop %1$d</string>
+    <string name="quitar">✕ Remove</string>
+    <string name="cultivo_n_nombre">Crop %1$d: %2$s</string>
+    <string name="se_quito">%1$s removed</string>
+    <string name="minimo_cultivos">At least 2 crops</string>
+    <string name="seleccionar_cultivo_n">Select crop %1$d</string>
+    <string name="anadir_cultivo_titulo">Add crop</string>
+    <string name="quitar_cultivo">Remove crop</string>
+    <string name="chip_agua">Save water</string>
+    <string name="error_sesion">Error: please sign in again.</string>
+    <string name="cargando_analisis">Analyzing with NASA…</string>
+    <string name="analisis_ok">NASA analysis complete</string>
+    <string name="error_analisis">Analysis error (%1$d): %2$s</string>
+    <string name="desconocido">Unknown</string>
+    <string name="error_perfil">Error updating profile: %1$d</string>
+    <string-array name="meses_cortos">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
 </resources>

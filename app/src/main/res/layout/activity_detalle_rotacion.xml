@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.06"
-                    android:text="DETALLE DE ROTACIÓN"
+                    android:text="@string/det_titulo"
                     android:textColor="#171715"
                     android:textSize="11sp"
                     android:textStyle="bold" />
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:letterSpacing="0.06"
-                android:text="ALTERNATIVA 1"
+                android:text="@string/alternativa_1"
                 android:textColor="#7A766E"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Papa → Maíz → Frijol"
+                android:text="@string/ej_rotacion_3"
                 android:textColor="#171715"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -133,7 +133,7 @@
                             android:id="@+id/tvNombreCultivo1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Papa"
+                            android:text="@string/ej_cultivo_papa"
                             android:textColor="#171715"
                             android:textSize="12.5sp"
                             android:textStyle="bold" />
@@ -189,7 +189,7 @@
                             android:id="@+id/tvNombreCultivo2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Maíz"
+                            android:text="@string/ej_cultivo_maiz"
                             android:textColor="#171715"
                             android:textSize="12.5sp"
                             android:textStyle="bold" />
@@ -245,7 +245,7 @@
                             android:id="@+id/tvNombreCultivo3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Frijol"
+                            android:text="@string/ej_cultivo_frijol"
                             android:textColor="#171715"
                             android:textSize="12.5sp"
                             android:textStyle="bold" />
@@ -280,7 +280,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Por qué se sugiere"
+                            android:text="@string/por_que_se_sugiere"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -289,7 +289,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Añade una leguminosa al ciclo."
+                            android:text="@string/ej_porque_alt1"
                             android:textColor="#171715"
                             android:textSize="11.5sp" />
                     </LinearLayout>
@@ -304,7 +304,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Beneficio"
+                            android:text="@string/beneficio"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -320,7 +320,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="3dp"
-                                android:text="Aporta nitrógeno y ahorra agua."
+                                android:text="@string/ej_beneficio_alt1"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp" />
 
@@ -333,7 +333,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:paddingBottom="2dp"
-                                android:text="Ver más ↓"
+                                android:text="@string/ver_mas"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp"
                                 android:textStyle="bold"
@@ -351,7 +351,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Riesgo"
+                            android:text="@string/riesgo"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -367,7 +367,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="3dp"
-                                android:text="Sensible a heladas. Validar fechas."
+                                android:text="@string/ej_riesgo_alt1"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp" />
 
@@ -380,7 +380,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:paddingBottom="2dp"
-                                android:text="Ver más ↓"
+                                android:text="@string/ver_mas"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp"
                                 android:textStyle="bold"
@@ -398,7 +398,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Evidencia NASA"
+                            android:text="@string/evidencia_nasa"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -414,7 +414,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="3dp"
-                                android:text="SMAP: humedad baja. POWER: seco."
+                                android:text="@string/ej_evidencia"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp" />
 
@@ -427,7 +427,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:paddingBottom="2dp"
-                                android:text="Ver más ↓"
+                                android:text="@string/ver_mas"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp"
                                 android:textStyle="bold"
@@ -444,7 +444,7 @@
                         <TextView
                             android:layout_width="112dp"
                             android:layout_height="wrap_content"
-                            android:text="Datos faltantes"
+                            android:text="@string/datos_faltantes"
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
@@ -460,7 +460,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="3dp"
-                                android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                                android:text="@string/ej_faltante"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp" />
 
@@ -473,7 +473,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:paddingBottom="2dp"
-                                android:text="Ver más ↓"
+                                android:text="@string/ver_mas"
                                 android:textColor="#171715"
                                 android:textSize="11.5sp"
                                 android:textStyle="bold"
@@ -488,7 +488,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:text="Lo que puede aportar"
+                android:text="@string/det_lo_que_aporta"
                 android:textColor="#171715"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -502,7 +502,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Consumo de agua"
+                    android:text="@string/det_consumo_agua"
                     android:textColor="#171715"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -527,7 +527,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Referencia"
+                    android:text="@string/referencia"
                     android:textColor="#7A766E"
                     android:textSize="11sp" />
 
@@ -566,7 +566,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Esta rotación"
+                    android:text="@string/det_esta_rotacion"
                     android:textColor="#7A766E"
                     android:textSize="11sp" />
 
@@ -610,7 +610,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Salud del suelo / Nitrógeno"
+                    android:text="@string/det_salud_suelo"
                     android:textColor="#171715"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -620,7 +620,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="Mayor"
+                    android:text="@string/det_mayor"
                     android:textColor="#171715"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -631,7 +631,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Referencia"
+                android:text="@string/referencia"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
 
@@ -662,7 +662,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Con leguminosa"
+                android:text="@string/det_con_leguminosa"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
 
@@ -717,7 +717,7 @@
                         android:id="@+id/tvAlertaDetalle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Validar época de siembra con asesor local"
+                        android:text="@string/det_validar_epoca"
                         android:textColor="#171715"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -741,7 +741,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Guardar esta rotación en mi finca"
+                    android:text="@string/det_guardar"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -785,7 +785,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Inicio"
+                android:text="@string/nav_inicio"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -810,7 +810,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Rotaciones"
+                android:text="@string/nav_rotaciones"
                 android:textColor="#171715"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -836,7 +836,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Mi finca"
+                android:text="@string/nav_mi_finca"
                 android:textColor="#7A766E"
                 android:textSize="11sp" />
         </LinearLayout>
