@@ -124,7 +124,6 @@ class MiFincaActivity : AppCompatActivity() {
     }
 
     private fun mostrarSelectorEcoCrop(indiceEditar: Int?) {
-        // TODO: Descomentar GET "api/v1/cultivos" cuando el backend esté desplegado
         val cultivoActual = if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] else null
 
         val opcionesMostradas = MockRepository.catalogoEcoCrop.map { item ->
@@ -252,7 +251,7 @@ class MiFincaActivity : AppCompatActivity() {
 
         // Construcción exacta del contrato peticion.json
         val codigosRotacion = MockRepository.cultivosSeleccionados.map { nombre ->
-            MockRepository.catalogoEcoCrop.find { it.name == nombre }?.id ?: nombre.lowercase()
+            MockRepository.catalogoEcoCrop.find { it.name.equals(nombre, ignoreCase = true) }?.id ?: nombre.lowercase()
         }
 
         val peticion = PeticionAnalisis(
@@ -262,8 +261,21 @@ class MiFincaActivity : AppCompatActivity() {
             prioridades = MockRepository.prioridadesSeleccionadas.toList()
         )
 
-        // TODO: descomentar llamada POST "api/v1/analisis" enviando "peticion" cuando el backend este desplegado
-        // val respuestaServidor = ApiClient.enviarAnalisis(peticion)
+        // Conexión directa al Backend con ApiService
+        Toast.makeText(this, "Actualizando análisis con NASA y backend...", Toast.LENGTH_SHORT).show()
+        ApiService.consultarAnalisis(
+            peticion = peticion,
+            onSuccess = {
+                runOnUiThread {
+                    Toast.makeText(this, "Análisis NASA actualizado en servidor", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onError = { error ->
+                runOnUiThread {
+                    Toast.makeText(this, "Guardado local ($error)", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
 
         val mensajeToast = if (MockRepository.cultivosSeleccionados != cultivosOriginales) {
             "Análisis actualizado: ${MockRepository.cultivosSeleccionados.joinToString(" → ")}"

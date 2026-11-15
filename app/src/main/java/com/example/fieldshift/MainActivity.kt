@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun cargarDatosInicio() {
-        // TODO: Descomentar llamada GET "api/v1/user" cuando el backend esté desplegado
-        val respuesta = MockRepository.respuestaMock
+        // Datos sincronizados con la respuesta activa del backend
+        val respuesta = MockRepository.respuestaActiva
         val clima = respuesta.clima
 
         findViewById<TextView>(R.id.tvSaludo).text = "Hola, ${MockRepository.nombreUsuario}"

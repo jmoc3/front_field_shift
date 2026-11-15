@@ -2,8 +2,11 @@ package com.example.fieldshift
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.card.MaterialCardView
 
 class RotacionesActivity : AppCompatActivity() {
+
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,16 +28,64 @@ class RotacionesActivity : AppCompatActivity() {
             insets
         }
 
-        cargarDatos()
+        progressBar = findViewById(R.id.pbCargandoRotaciones)
+
+        // 1. Mostrar datos actuales de memoria/cache
+        cargarDatosUI()
         configurarInteracciones()
         configurarNavegacion()
+
+        // 2. Ejecutar llamada al Backend en segundo plano para sincronizar en tiempo real
+        consultarBackend()
     }
 
-    private fun cargarDatos() {
-        val rotaciones = MockRepository.rotacionesComparativa
+    private fun consultarBackend() {
+        progressBar.visibility = View.VISIBLE
+
+        val codigosRotacion = MockRepository.cultivosSeleccionados.map { nombre ->
+            MockRepository.catalogoEcoCrop.find { it.name.equals(nombre, ignoreCase = true) }?.id ?: nombre.lowercase()
+        }
+
+        val peticion = PeticionAnalisis(
+            lat = MockRepository.latFinca,
+            lon = MockRepository.lonFinca,
+            rotacion = codigosRotacion,
+            prioridades = MockRepository.prioridadesSeleccionadas.toList()
+        )
+
+        ApiService.consultarAnalisis(
+            peticion = peticion,
+            onSuccess = { respuesta ->
+                runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    cargarDatosUI()
+                }
+            },
+            onError = { error ->
+                runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    // Mantiene la vista visible con los datos cacheados y notifica amigablemente
+                    Toast.makeText(this, "Datos locales sincronizados (Servidor: $error)", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
+    }
+
+    private fun cargarDatosUI() {
+        val respuesta = MockRepository.respuestaActiva
+        val clima = respuesta.clima
+
+        // Tarjetas Ambientales
+        val nivelHumedad = clima.humedad_nivel.replaceFirstChar { it.uppercase() }
+        findViewById<TextView>(R.id.tvSmapHumedad).text = "Humedad: $nivelHumedad"
+
+        val tipoClima = clima.clima_tipo.replaceFirstChar { it.uppercase() }
+        findViewById<TextView>(R.id.tvNasaClima).text = "Clima: $tipoClima"
+
+        val rotaciones = MockRepository.obtenerOpciones()
 
         // Rotación Actual
-        val actual = rotaciones.getOrNull(0)
+        val actual = rotaciones.find { it.actual } ?: rotaciones.getOrNull(0)
         if (actual != null) {
             findViewById<TextView>(R.id.tvTituloActual).text = actual.nombre
             findViewById<TextView>(R.id.tvPorqueActual).text = actual.porque
@@ -43,7 +96,7 @@ class RotacionesActivity : AppCompatActivity() {
         }
 
         // Alternativa 1
-        val alt1 = rotaciones.getOrNull(1)
+        val alt1 = rotaciones.find { !it.actual && it.id == "opcion_1" } ?: rotaciones.getOrNull(1)
         if (alt1 != null) {
             findViewById<TextView>(R.id.tvTituloAlt1).text = alt1.nombre
             findViewById<TextView>(R.id.tvPorqueAlt1).text = alt1.porque
@@ -54,7 +107,7 @@ class RotacionesActivity : AppCompatActivity() {
         }
 
         // Alternativa 2
-        val alt2 = rotaciones.getOrNull(2)
+        val alt2 = rotaciones.find { !it.actual && it.id == "opcion_2" } ?: rotaciones.getOrNull(2)
         if (alt2 != null) {
             findViewById<TextView>(R.id.tvTituloAlt2).text = alt2.nombre
             findViewById<TextView>(R.id.tvPorqueAlt2).text = alt2.porque
@@ -75,23 +128,28 @@ class RotacionesActivity : AppCompatActivity() {
     private fun configurarInteracciones() {
         // Clics a Detalle de Alternativa 1
         findViewById<TextView>(R.id.btnVerDetalle1).setOnClickListener {
-            abrirDetalle("alternativa_1")
+            val rot = MockRepository.obtenerOpciones().find { !it.actual && it.id == "opcion_1" } ?: MockRepository.obtenerOpciones().getOrNull(1)
+            abrirDetalle(rot?.id ?: "opcion_1")
         }
         findViewById<MaterialCardView>(R.id.cardAlternativa1).setOnClickListener {
-            abrirDetalle("alternativa_1")
+            val rot = MockRepository.obtenerOpciones().find { !it.actual && it.id == "opcion_1" } ?: MockRepository.obtenerOpciones().getOrNull(1)
+            abrirDetalle(rot?.id ?: "opcion_1")
         }
 
         // Clics a Detalle de Alternativa 2
         findViewById<TextView>(R.id.btnVerDetalle2).setOnClickListener {
-            abrirDetalle("alternativa_2")
+            val rot = MockRepository.obtenerOpciones().find { !it.actual && it.id == "opcion_2" } ?: MockRepository.obtenerOpciones().getOrNull(2)
+            abrirDetalle(rot?.id ?: "opcion_2")
         }
         findViewById<MaterialCardView>(R.id.cardAlternativa2).setOnClickListener {
-            abrirDetalle("alternativa_2")
+            val rot = MockRepository.obtenerOpciones().find { !it.actual && it.id == "opcion_2" } ?: MockRepository.obtenerOpciones().getOrNull(2)
+            abrirDetalle(rot?.id ?: "opcion_2")
         }
 
         // Clic a Detalle de Rotación Actual
         findViewById<MaterialCardView>(R.id.cardRotacionActual).setOnClickListener {
-            abrirDetalle("actual")
+            val rot = MockRepository.obtenerOpciones().find { it.actual } ?: MockRepository.obtenerOpciones().first()
+            abrirDetalle(rot.id)
         }
     }
 

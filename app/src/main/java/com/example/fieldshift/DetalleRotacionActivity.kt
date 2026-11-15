@@ -32,7 +32,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
             insets
         }
 
-        val rotacionId = intent.getStringExtra(EXTRA_ROTACION_ID) ?: "alternativa_1"
+        val rotacionId = intent.getStringExtra(EXTRA_ROTACION_ID) ?: "opcion_1"
         rotacionSeleccionada = MockRepository.obtenerRotacionPorId(rotacionId)
 
         cargarDatos()
@@ -50,14 +50,14 @@ class DetalleRotacionActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvSubtituloDetalle).text =
             "${MockRepository.ubicacionFinca} · ${MockRepository.hectareasFinca} ha"
 
-        // Filas informativas
+        // Filas informativas (todas o principales del backend)
         findViewById<TextView>(R.id.tvDetallePorque).text = rot.porque
         findViewById<TextView>(R.id.tvDetalleBeneficio).text = rot.beneficioTexto
         findViewById<TextView>(R.id.tvDetalleRiesgo).text = rot.riesgoTexto
         findViewById<TextView>(R.id.tvDetalleEvidencia).text = rot.evidenciaNasaTexto
         findViewById<TextView>(R.id.tvDetalleDatosFaltantes).text = rot.datosFaltantesTexto
 
-        // Métricas "Lo que puede aportar"
+        // Métricas "Lo que puede aportar" mapeadas desde aporte.agua y aporte.suelo
         findViewById<TextView>(R.id.tvAhorroAguaPorcentaje).text = rot.ahorroAguaPorcentaje
         findViewById<TextView>(R.id.tvAhorroAguaValor).text = rot.ahorroAguaValor.toString()
         findViewById<TextView>(R.id.tvSaludSueloTexto).text = rot.saludSueloTexto
@@ -67,7 +67,7 @@ class DetalleRotacionActivity : AppCompatActivity() {
         params.weight = rot.ahorroAguaValor.toFloat().coerceIn(10f, 100f)
         barraEstaRotacion.layoutParams = params
 
-        // Aviso / Alerta
+        // Aviso / Alerta técnica
         findViewById<TextView>(R.id.tvAlertaDetalle).text = rot.alertaTexto
     }
 
@@ -76,24 +76,27 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         // Cultivo 1
         if (cultivos.isNotEmpty()) {
+            val nombre1 = formatearNombreCultivo(cultivos[0])
             findViewById<TextView>(R.id.tvNumCultivo1).text = "01"
-            findViewById<TextView>(R.id.tvNombreCultivo1).text = cultivos[0]
+            findViewById<TextView>(R.id.tvNombreCultivo1).text = nombre1
             findViewById<ImageView>(R.id.ivIconCultivo1).setImageResource(obtenerIconoCultivo(cultivos[0]))
         }
 
         // Cultivo 2
         if (cultivos.size > 1) {
+            val nombre2 = formatearNombreCultivo(cultivos[1])
             findViewById<TextView>(R.id.tvNumCultivo2).text = "02"
-            findViewById<TextView>(R.id.tvNombreCultivo2).text = cultivos[1]
+            findViewById<TextView>(R.id.tvNombreCultivo2).text = nombre2
             findViewById<ImageView>(R.id.ivIconCultivo2).setImageResource(obtenerIconoCultivo(cultivos[1]))
         }
 
         // Cultivo 3 (si existe)
         if (cultivos.size > 2) {
+            val nombre3 = formatearNombreCultivo(cultivos[2])
             findViewById<View>(R.id.tvFlecha2).visibility = View.VISIBLE
             findViewById<View>(R.id.cardCultivo3).visibility = View.VISIBLE
             findViewById<TextView>(R.id.tvNumCultivo3).text = "03"
-            findViewById<TextView>(R.id.tvNombreCultivo3).text = cultivos[2]
+            findViewById<TextView>(R.id.tvNombreCultivo3).text = nombre3
             findViewById<ImageView>(R.id.ivIconCultivo3).setImageResource(obtenerIconoCultivo(cultivos[2]))
         } else {
             findViewById<View>(R.id.tvFlecha2).visibility = View.GONE
@@ -101,13 +104,21 @@ class DetalleRotacionActivity : AppCompatActivity() {
         }
     }
 
+    private fun formatearNombreCultivo(idONombre: String): String {
+        val item = MockRepository.catalogoEcoCrop.find { it.id.equals(idONombre, ignoreCase = true) || it.name.equals(idONombre, ignoreCase = true) }
+        return item?.name ?: idONombre.replaceFirstChar { it.uppercase() }
+    }
+
     private fun obtenerIconoCultivo(nombre: String): Int {
         val lower = nombre.lowercase().trim()
         return when {
             lower.contains("papa") -> R.drawable.ic_crop_potato
             lower.contains("maiz") || lower.contains("maíz") -> R.drawable.ic_crop_corn
-            lower.contains("frijol") || lower.contains("fríjol") -> R.drawable.ic_crop_bean
-            lower.contains("avena") -> R.drawable.ic_crop_oat
+            lower.contains("frijol") || lower.contains("fríjol") || lower.contains("mucuna") -> R.drawable.ic_crop_bean
+            lower.contains("arroz") -> R.drawable.ic_crop_rice
+            lower.contains("batata") -> R.drawable.ic_crop_sweetpotato
+            lower.contains("yuca") -> R.drawable.ic_crop_cassava
+            lower.contains("avena") || lower.contains("trigo") || lower.contains("cebada") -> R.drawable.ic_crop_oat
             lower.contains("arveja") -> R.drawable.ic_crop_pea
             else -> R.drawable.ic_crop_potato
         }
@@ -121,7 +132,8 @@ class DetalleRotacionActivity : AppCompatActivity() {
 
         // Botón "Guardar esta rotación en mi finca"
         findViewById<MaterialCardView>(R.id.btnGuardarRotacion).setOnClickListener {
-            MockRepository.cultivosSeleccionados = rotacionSeleccionada.cultivos.toMutableList()
+            val nombresFormateados = rotacionSeleccionada.cultivos.map { formatearNombreCultivo(it) }
+            MockRepository.cultivosSeleccionados = nombresFormateados.toMutableList()
             Toast.makeText(
                 this,
                 "Rotación guardada en tu finca: ${rotacionSeleccionada.nombre}",

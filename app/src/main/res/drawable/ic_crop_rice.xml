@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Espiga de arroz / espiguillas curvadas -->
+    <path
+        android:pathData="M5,20 C8,17 12,12 17,4"
+        android:strokeWidth="1.8"
+        android:strokeColor="#1C1B19"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M17,4 C19,5 19,8 16,9 C15,7 15,5 17,4 Z"
+        android:strokeWidth="1.4"
+        android:strokeColor="#1C1B19"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M14,8 C16,9 16,12 13,13 C12,11 12,9 14,8 Z"
+        android:strokeWidth="1.4"
+        android:strokeColor="#1C1B19"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M11,12 C13,13 13,16 10,17 C9,15 9,13 11,12 Z"
+        android:strokeWidth="1.4"
+        android:strokeColor="#1C1B19"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M13,6 C11,6 10,8 12,10 C13,9 14,7 13,6 Z"
+        android:strokeWidth="1.4"
+        android:strokeColor="#1C1B19"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M10,10 C8,10 7,12 9,14 C10,13 11,11 10,10 Z"
+        android:strokeWidth="1.4"
+        android:strokeColor="#1C1B19"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+</vector>
