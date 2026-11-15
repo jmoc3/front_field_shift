@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Firma de la app release (secreta)
+/firma/
+keystore.properties

@@ -1,5 +1,13 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+}
+
+// Clave de firma release: vive en keystore.properties (fuera de git)
+val firma = Properties().apply {
+    val archivo = rootProject.file("keystore.properties")
+    if (archivo.exists()) archivo.inputStream().use { load(it) }
 }
 
 android {
@@ -18,8 +26,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (firma.containsKey("storeFile")) {
+            create("release") {
+                storeFile = file(firma.getProperty("storeFile"))
+                storePassword = firma.getProperty("storePassword")
+                keyAlias = firma.getProperty("keyAlias")
+                keyPassword = firma.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             optimization {
                 enable = false
             }
