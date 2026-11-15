@@ -47,6 +47,17 @@ object MockRepository {
         }
     }
 
+    /** Al cerrar sesión se descartan los datos del usuario (el catálogo se conserva: es común a todos). */
+    fun reiniciarSesion() {
+        ultimoAnalisisNasa = null
+        nombreUsuario = ""
+        ubicacionFinca = ""
+        hectareasFinca = 0.0
+        ubicacionGeocodificada = null
+        cultivosSeleccionados = mutableListOf()
+        prioridadesSeleccionadas = mutableSetOf("agua")
+    }
+
     private val ordenPrioridades = listOf("agua", "suelo", "economia", "equipos")
 
     /** Busca un cultivo por id o por nombre, sin importar mayúsculas ni tildes. */

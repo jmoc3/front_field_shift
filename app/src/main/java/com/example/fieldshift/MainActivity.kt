@@ -2,6 +2,7 @@ package com.example.fieldshift
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -114,6 +116,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun mostrarDialogoPerfil() {
+        val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
+        val nombre = prefs.getString("user_nombre", null) ?: MockRepository.nombreUsuario
+        val correo = prefs.getString("user_email", null).orEmpty()
+
+        val dialogo = AlertDialog.Builder(this)
+            .setTitle(nombre)
+            .setMessage(listOf(correo, MockRepository.ubicacionFinca).filter { it.isNotBlank() }.joinToString("\n"))
+            .setPositiveButton("Cerrar sesión") { _, _ -> cerrarSesion() }
+            .setNegativeButton("Cancelar", null)
+            .create()
+        dialogo.show()
+        // Mismos colores que el diálogo de Mi Finca
+        dialogo.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.parseColor("#B83B2A"))
+        dialogo.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.parseColor("#7A766E"))
+    }
+
+    /** Borra los datos locales del usuario y vuelve a Acceso sin dejar pantallas atrás. */
+    private fun cerrarSesion() {
+        getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE).edit().clear().apply()
+        MockRepository.reiniciarSesion()
+        startActivity(Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finish()
+    }
+
     // Filas de "Actividad reciente": contenedor, ícono, título, detalle y fecha
     private val filasActividad = listOf(
         intArrayOf(R.id.filaActividad1, R.id.ivActividad1, R.id.tvActividadTitulo1, R.id.tvActividadRotacion, R.id.tvActividadFecha1),
@@ -172,6 +201,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.navMiFinca)?.setOnClickListener {
             startActivity(Intent(this, MiFincaActivity::class.java))
         }
+
+        // Ícono de perfil: datos de la cuenta y cerrar sesión
+        findViewById<MaterialCardView>(R.id.btnPerfilTop)?.setOnClickListener { mostrarDialogoPerfil() }
 
         // Navegación de las tarjetas principales
         findViewById<MaterialCardView>(R.id.cardConfigurarFinca)?.setOnClickListener {
