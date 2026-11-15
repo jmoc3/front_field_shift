@@ -242,7 +242,7 @@ class MiFincaActivity : AppCompatActivity() {
         }
 
         val todosLosCultivos = MockRepository.cultivosSeleccionados.toList()
-        btnActualizarNasa.isEnabled = false
+        btnActualizarNasa.mostrarCargando(true, "Analizando con NASA…")
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -276,7 +276,7 @@ class MiFincaActivity : AppCompatActivity() {
                     val respuestaAnalisis = RetrofitClient.apiService.analizarRotacion(peticionAnalisis)
 
                     withContext(Dispatchers.Main) {
-                        btnActualizarNasa.isEnabled = true
+                        btnActualizarNasa.mostrarCargando(false, "")
                         if (respuestaAnalisis.isSuccessful && respuestaAnalisis.body() != null) {
 
                             // GUARDAMOS EL RESULTADO PARA QUE LO LEA LA SIGUIENTE PANTALLA
@@ -292,13 +292,13 @@ class MiFincaActivity : AppCompatActivity() {
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        btnActualizarNasa.isEnabled = true
+                        btnActualizarNasa.mostrarCargando(false, "")
                         Toast.makeText(this@MiFincaActivity, "Error al actualizar perfil: ${respuestaUser.code()}", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    btnActualizarNasa.isEnabled = true
+                    btnActualizarNasa.mostrarCargando(false, "")
                     Toast.makeText(this@MiFincaActivity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }

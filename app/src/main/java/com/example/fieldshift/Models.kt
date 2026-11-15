@@ -2,6 +2,9 @@ package com.example.fieldshift
 
 import android.content.Context
 import android.location.Geocoder
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import com.google.gson.annotations.SerializedName
 import java.text.Normalizer
 
@@ -132,6 +135,28 @@ fun normalizar(texto: String): String =
     Normalizer.normalize(texto.trim().lowercase(), Normalizer.Form.NFD)
         .replace(Regex("\\p{Mn}+"), "")
         .replace(" ", "_")
+
+/**
+ * Estado de carga de un botón (MaterialCardView con su texto adentro): lo deshabilita, lo atenúa
+ * y cambia el texto mientras dura la petición; al terminar restaura el texto original.
+ */
+fun View.mostrarCargando(cargando: Boolean, textoCarga: String) {
+    fun primerTexto(v: View): TextView? = when (v) {
+        is TextView -> v
+        is ViewGroup -> (0 until v.childCount).firstNotNullOfOrNull { primerTexto(v.getChildAt(it)) }
+        else -> null
+    }
+    val texto = primerTexto(this)
+    if (cargando) {
+        if (tag == null) tag = texto?.text
+        texto?.text = textoCarga
+    } else {
+        (tag as? CharSequence)?.let { texto?.text = it }
+        tag = null
+    }
+    isEnabled = !cargando
+    alpha = if (cargando) 0.6f else 1f
+}
 
 /** 1849.0 -> "1849", 18.9 -> "18.9" */
 fun formatearNumero(valor: Double): String =

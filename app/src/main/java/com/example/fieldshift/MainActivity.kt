@@ -84,6 +84,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // Mientras carga se ocultan las filas para no mostrar la actividad anterior
+        val pbActividad = findViewById<View>(R.id.pbActividad)
+        pbActividad.visibility = View.VISIBLE
+        filasActividad.forEach { findViewById<View>(it[0]).visibility = View.GONE }
+        findViewById<TextView>(R.id.tvLluviaValor).text = "…"
+
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 MockRepository.actualizarCoordenadas(this@MainActivity)
@@ -94,10 +100,13 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 withContext(Dispatchers.Main) {
+                    pbActividad.visibility = View.GONE
                     mostrarActividades(respuesta.body()?.actividad.orEmpty())
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    pbActividad.visibility = View.GONE
+                    mostrarActividades(emptyList())
                     // Si falla el internet o el servidor, no explota, solo avisa
                     Toast.makeText(this@MainActivity, "Sin conexión para actividades", Toast.LENGTH_SHORT).show()
                 }

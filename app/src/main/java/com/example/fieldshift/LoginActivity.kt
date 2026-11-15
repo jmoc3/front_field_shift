@@ -155,7 +155,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            btnEntrar.isEnabled = false
+            btnEntrar.mostrarCargando(true, "Entrando…")
 
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
@@ -174,7 +174,7 @@ class LoginActivity : AppCompatActivity() {
                     } else null
 
                     withContext(Dispatchers.Main) {
-                        btnEntrar.isEnabled = true
+                        btnEntrar.mostrarCargando(false, "")
                         if (respuesta.isSuccessful && respuesta.body() != null) {
                             val datosBackend = respuesta.body()!!
                             val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
@@ -225,7 +225,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        btnEntrar.isEnabled = true
+                        btnEntrar.mostrarCargando(false, "")
                         Toast.makeText(this@LoginActivity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -286,7 +286,7 @@ class LoginActivity : AppCompatActivity() {
             todosLosCultivos.add(spinnerCultivo2.selectedItem.toString())
             cultivosAdicionales.forEach { todosLosCultivos.add(it.spinner.selectedItem.toString()) }
 
-            btnGuardarRegistro.isEnabled = false
+            btnGuardarRegistro.mostrarCargando(true, "Creando tu finca…")
 
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
@@ -300,7 +300,7 @@ class LoginActivity : AppCompatActivity() {
                     val respuesta = RetrofitClient.apiService.registro(peticion)
 
                     withContext(Dispatchers.Main) {
-                        btnGuardarRegistro.isEnabled = true
+                        btnGuardarRegistro.mostrarCargando(false, "")
 
                         if (respuesta.isSuccessful && respuesta.body() != null) {
                             val datosRegistro = respuesta.body()!!
@@ -339,7 +339,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        btnGuardarRegistro.isEnabled = true
+                        btnGuardarRegistro.mostrarCargando(false, "")
                         Toast.makeText(this@LoginActivity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
                     }
                 }

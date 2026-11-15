@@ -366,6 +366,17 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Carga de la actividad (mismo indicador que Rotaciones) -->
+            <ProgressBar
+                android:id="@+id/pbActividad"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginBottom="18dp"
+                android:indeterminate="true"
+                android:indeterminateTint="#171715"
+                android:visibility="gone" />
+
             <!-- Item 1: Rotación guardada -->
             <LinearLayout
                 android:id="@+id/filaActividad1"

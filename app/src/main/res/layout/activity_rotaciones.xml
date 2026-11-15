@@ -17,7 +17,21 @@
         android:indeterminateTint="#171715"
         android:visibility="gone" />
 
+    <!-- Mensaje mientras llega el análisis (reemplaza al contenido para no mostrar datos viejos) -->
+    <TextView
+        android:id="@+id/tvCargandoRotaciones"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingHorizontal="40dp"
+        android:text="Analizando tu finca con datos de NASA…"
+        android:textColor="#7A766E"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
     <ScrollView
+        android:id="@+id/scrollRotaciones"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

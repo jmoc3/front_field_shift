@@ -53,6 +53,13 @@ class RotacionesActivity : AppCompatActivity() {
         return opcionesActivas().filter { !it.actual }.getOrNull(indice)
     }
 
+    /** Mientras llega el análisis se oculta el contenido para no mostrar datos de ejemplo o anteriores. */
+    private fun mostrarCarga(cargando: Boolean) {
+        progressBar.visibility = if (cargando) View.VISIBLE else View.GONE
+        findViewById<View>(R.id.tvCargandoRotaciones).visibility = if (cargando) View.VISIBLE else View.GONE
+        findViewById<View>(R.id.scrollRotaciones).visibility = if (cargando) View.GONE else View.VISIBLE
+    }
+
     private fun consultarBackend() {
         // Mi Finca ya pidió el análisis con los datos actuales: no se repite la consulta a NASA
         if (MockRepository.ultimoAnalisisNasa != null) return
@@ -61,7 +68,7 @@ class RotacionesActivity : AppCompatActivity() {
         val usuarioId = prefs.getInt("user_id", -1)
         if (usuarioId == -1) return
 
-        progressBar.visibility = View.VISIBLE
+        mostrarCarga(true)
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -75,7 +82,7 @@ class RotacionesActivity : AppCompatActivity() {
                 )
                 val respuesta = RetrofitClient.apiService.analizarRotacion(peticion)
                 withContext(Dispatchers.Main) {
-                    progressBar.visibility = View.GONE
+                    mostrarCarga(false)
                     val body = respuesta.body()
                     if (respuesta.isSuccessful && body != null) {
                         MockRepository.ultimoAnalisisNasa = body
@@ -90,7 +97,7 @@ class RotacionesActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    progressBar.visibility = View.GONE
+                    mostrarCarga(false)
                     Toast.makeText(
                         this@RotacionesActivity,
                         "Datos locales sincronizados (Servidor: ${e.message})",
