@@ -18,7 +18,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.card.MaterialCardView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -46,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
         listOf("Seleccionar cultivo") + MockRepository.catalogoEcoCrop.map { it.name }
     }
 
-    // Expresión regular: solo letras (incluyendo tildes y ñ) y espacios
     private val regexSoloLetras = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]{2,}$")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                 if (it.isNotBlank()) MockRepository.ubicacionFinca = it
             }
 
+            // Lectura protegida con getString para evitar conflictos de tipos
             val haGuardadas = prefs.getString("user_hectareas", null)
             haGuardadas?.toDoubleOrNull()?.toInt()?.let {
                 MockRepository.hectareasFinca = it
@@ -126,111 +130,179 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun configurarAcciones() {
-        // Acción 1: Ingresar con correo existente
         btnEntrar.setOnClickListener {
             val email = etLoginEmail.text.toString().trim()
 
             if (!esCorreoValido(email)) {
-                etLoginEmail.error = "Ingresa un correo válido (ej: tu@correo.com)"
+                etLoginEmail.error = "Ingresa un correo válido"
                 etLoginEmail.requestFocus()
                 return@setOnClickListener
             }
 
-            val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
-            val nombreGuardado = prefs.getString("user_nombre", null)
+            btnEntrar.isEnabled = false
 
-            if (nombreGuardado.isNullOrBlank()) {
-                val nombrePorCorreo = email.substringBefore("@").replaceFirstChar { it.uppercase() }
-                MockRepository.nombreUsuario = nombrePorCorreo
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val peticion = LoginRequest(correo = email)
+                    val respuesta = RetrofitClient.apiService.login(peticion)
+
+                    withContext(Dispatchers.Main) {
+                        btnEntrar.isEnabled = true
+                        if (respuesta.isSuccessful && respuesta.body() != null) {
+                            val datosBackend = respuesta.body()!!
+                            val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
+
+                            val idReal = datosBackend.usuario?.id
+                            if (idReal != null) {
+                                prefs.edit().putInt("user_id", idReal).apply()
+                            } else {
+                                Toast.makeText(this@LoginActivity, "Error: El servidor no envió datos de usuario", Toast.LENGTH_LONG).show()
+                            }
+
+                            prefs.edit().putString("user_email", email).apply()
+
+                            val nombreReal = datosBackend.usuario?.nombre
+                            if (!nombreReal.isNullOrBlank()) {
+                                MockRepository.nombreUsuario = nombreReal
+                                prefs.edit().putString("user_nombre", nombreReal).apply()
+                            }
+
+                            datosBackend.usuario?.ubicacion?.let {
+                                MockRepository.ubicacionFinca = it
+                                prefs.edit().putString("user_ubicacion", it).apply()
+                            }
+
+                            datosBackend.usuario?.hectareas?.let {
+                                MockRepository.hectareasFinca = it.toInt()
+                                prefs.edit().putString("user_hectareas", it.toInt().toString()).apply()
+                            }
+
+                            Toast.makeText(this@LoginActivity, "Conectado: ${datosBackend.mensaje ?: "Éxito"}", Toast.LENGTH_SHORT).show()
+                            irAMainActivity()
+                        } else {
+                            Toast.makeText(this@LoginActivity, "El correo no existe o error en servidor", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        btnEntrar.isEnabled = true
+                        Toast.makeText(this@LoginActivity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
-
-            Toast.makeText(this, "Bienvenido de nuevo, ${MockRepository.nombreUsuario}", Toast.LENGTH_SHORT).show()
-            irAMainActivity()
         }
 
-        // Acción 2: Añadir cultivo extra
         btnAnadirCultivo.setOnClickListener {
             agregarSelectorCultivoExtra()
         }
 
-        // Acción 3: Guardar registro con validaciones completas
         btnGuardarRegistro.setOnClickListener {
             val nombre = etRegNombre.text.toString().trim()
             val email = etRegEmail.text.toString().trim()
             val ubicacion = etRegUbicacion.text.toString().trim()
             val hectareasStr = etRegHectareas.text.toString().trim()
 
-            // 1. Validar Nombre (solo letras, mínimo 2 caracteres, sin números)
             if (!regexSoloLetras.matches(nombre)) {
-                etRegNombre.error = "Ingresa un nombre válido (solo letras)"
+                etRegNombre.error = "Ingresa un nombre válido"
                 etRegNombre.requestFocus()
                 return@setOnClickListener
             }
 
-            // 2. Validar Correo electrónico con formato real (@ y dominio)
             if (!esCorreoValido(email)) {
-                etRegEmail.error = "Ingresa un correo válido (ej: tu@correo.com)"
+                etRegEmail.error = "Ingresa un correo válido"
                 etRegEmail.requestFocus()
                 return@setOnClickListener
             }
 
-            // 3. Validar Ubicación (que tenga al menos 3 letras y no sea números como "123")
             val cantidadLetrasUbicacion = ubicacion.count { it.isLetter() }
             if (ubicacion.length < 3 || cantidadLetrasUbicacion < 3) {
-                etRegUbicacion.error = "Ingresa un municipio y departamento válidos"
+                etRegUbicacion.error = "Ingresa municipio y departamento"
                 etRegUbicacion.requestFocus()
                 return@setOnClickListener
             }
 
-            // 4. Validar Hectáreas (número mayor a 0)
             val hectareasNum = hectareasStr.toDoubleOrNull()
             if (hectareasNum == null || hectareasNum <= 0) {
-                etRegHectareas.error = "Ingresa una superficie mayor a 0 ha"
+                etRegHectareas.error = "Ingresa una superficie válida"
                 etRegHectareas.requestFocus()
                 return@setOnClickListener
             }
 
-            // 5. Validar Cultivos base
             if (spinnerCultivo1.selectedItemPosition == 0 || spinnerCultivo2.selectedItemPosition == 0) {
-                Toast.makeText(this, "Selecciona al menos el Cultivo 1 y Cultivo 2 de tu rotación", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Selecciona al menos 2 cultivos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 6. Validar Cultivos adicionales
             for ((index, item) in cultivosAdicionales.withIndex()) {
                 if (item.spinner.selectedItemPosition == 0) {
                     val num = index + 3
-                    Toast.makeText(this, "Selecciona el Cultivo $num o elimínalo si no lo necesitas", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Selecciona el Cultivo $num", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
             }
 
             val hectareasInt = hectareasNum.toInt().coerceAtLeast(1)
-
             val todosLosCultivos = mutableListOf<String>()
             todosLosCultivos.add(spinnerCultivo1.selectedItem.toString())
             todosLosCultivos.add(spinnerCultivo2.selectedItem.toString())
-            cultivosAdicionales.forEach {
-                todosLosCultivos.add(it.spinner.selectedItem.toString())
+            cultivosAdicionales.forEach { todosLosCultivos.add(it.spinner.selectedItem.toString()) }
+
+            btnGuardarRegistro.isEnabled = false
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val peticion = RegistroRequest(
+                        nombre = nombre,
+                        correo = email,
+                        ubicacion = ubicacion,
+                        hectareas = hectareasNum,
+                        rotacion = todosLosCultivos
+                    )
+                    val respuesta = RetrofitClient.apiService.registro(peticion)
+
+                    withContext(Dispatchers.Main) {
+                        btnGuardarRegistro.isEnabled = true
+
+                        if (respuesta.isSuccessful && respuesta.body() != null) {
+                            val datosRegistro = respuesta.body()!!
+
+                            MockRepository.nombreUsuario = nombre
+                            MockRepository.ubicacionFinca = ubicacion
+                            MockRepository.hectareasFinca = hectareasInt
+                            MockRepository.cultivosSeleccionados.clear()
+                            MockRepository.cultivosSeleccionados.addAll(todosLosCultivos)
+
+                            val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
+
+                            val idReal = datosRegistro.usuario?.id
+                            if (idReal != null) {
+                                prefs.edit().putInt("user_id", idReal).apply()
+                            } else {
+                                Toast.makeText(this@LoginActivity, "Error: El servidor no envió datos de usuario", Toast.LENGTH_LONG).show()
+                            }
+
+                            prefs.edit()
+                                .putString("user_nombre", nombre)
+                                .putString("user_email", email)
+                                .putString("user_ubicacion", ubicacion)
+                                .putString("user_hectareas", hectareasInt.toString())
+                                .putString("user_cultivos", todosLosCultivos.joinToString("||"))
+                                .apply()
+
+                            Toast.makeText(this@LoginActivity, "Registro exitoso en servidor", Toast.LENGTH_SHORT).show()
+                            irAMainActivity()
+                        } else {
+                            val errorExacto = respuesta.errorBody()?.string()
+                            Toast.makeText(this@LoginActivity, "Error ${respuesta.code()}: $errorExacto", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        btnGuardarRegistro.isEnabled = true
+                        Toast.makeText(this@LoginActivity, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
-
-            MockRepository.nombreUsuario = nombre
-            MockRepository.ubicacionFinca = ubicacion
-            MockRepository.hectareasFinca = hectareasInt
-            MockRepository.cultivosSeleccionados.clear()
-            MockRepository.cultivosSeleccionados.addAll(todosLosCultivos)
-
-            val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
-            prefs.edit()
-                .putString("user_nombre", nombre)
-                .putString("user_email", email)
-                .putString("user_ubicacion", ubicacion)
-                .putString("user_hectareas", hectareasInt.toString())
-                .putString("user_cultivos", todosLosCultivos.joinToString("||"))
-                .apply()
-
-            Toast.makeText(this, "Finca registrada con éxito para $nombre", Toast.LENGTH_SHORT).show()
-            irAMainActivity()
         }
     }
 
@@ -263,11 +335,7 @@ class LoginActivity : AppCompatActivity() {
             text = "Cultivo $numeroInicial"
             setTextColor(Color.parseColor("#5C5953"))
             textSize = 13f
-            layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1f
-            )
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
 
         val tvEliminar = TextView(this).apply {

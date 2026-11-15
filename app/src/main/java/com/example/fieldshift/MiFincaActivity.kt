@@ -1,5 +1,6 @@
 package com.example.fieldshift
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -13,7 +14,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.card.MaterialCardView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MiFincaActivity : AppCompatActivity() {
 
@@ -21,6 +26,7 @@ class MiFincaActivity : AppCompatActivity() {
     private lateinit var etUbicacion: EditText
     private lateinit var etHectareas: EditText
     private lateinit var cultivosOriginales: List<String>
+    private lateinit var btnActualizarNasa: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +42,11 @@ class MiFincaActivity : AppCompatActivity() {
         containerCultivos = findViewById(R.id.containerCultivos)
         etUbicacion = findViewById(R.id.etUbicacion)
         etHectareas = findViewById(R.id.etHectareas)
+        btnActualizarNasa = findViewById(R.id.btnActualizarNasa)
 
         etUbicacion.setText(MockRepository.ubicacionFinca)
         etHectareas.setText(MockRepository.hectareasFinca.toString())
 
-        // Guardamos copia para comparar si la rotación fue alterada al guardar
         cultivosOriginales = MockRepository.cultivosSeleccionados.toList()
 
         renderizarSelectoresCultivos()
@@ -61,7 +67,7 @@ class MiFincaActivity : AppCompatActivity() {
                 ).apply {
                     bottomMargin = (10 * densidad).toInt()
                 }
-                radius = 14 * densidad
+                radius = 14f * densidad
                 cardElevation = 0f
                 setCardBackgroundColor(Color.WHITE)
                 strokeColor = Color.parseColor("#E2DFD7")
@@ -102,19 +108,15 @@ class MiFincaActivity : AppCompatActivity() {
             row.addView(tvArrow)
             card.addView(row)
 
-            // Toque normal: abre el catálogo EcoCrop
-            card.setOnClickListener {
-                mostrarSelectorEcoCrop(index)
-            }
+            card.setOnClickListener { mostrarSelectorEcoCrop(index) }
 
-            // Toque largo: elimina rápido si hay más de 2 cultivos
             card.setOnLongClickListener {
                 if (MockRepository.cultivosSeleccionados.size > 2) {
                     val eliminado = MockRepository.cultivosSeleccionados.removeAt(index)
                     renderizarSelectoresCultivos()
-                    Toast.makeText(this, "Se quitó $eliminado de la rotación", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Se quitó $eliminado", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Debes mantener mínimo 2 cultivos en la rotación", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Mínimo 2 cultivos", Toast.LENGTH_SHORT).show()
                 }
                 true
             }
@@ -124,110 +126,68 @@ class MiFincaActivity : AppCompatActivity() {
     }
 
     private fun mostrarSelectorEcoCrop(indiceEditar: Int?) {
-        // TODO: Descomentar GET "api/v1/cultivos" cuando el backend esté desplegado
         val cultivoActual = if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] else null
-
-        val opcionesMostradas = MockRepository.catalogoEcoCrop.map { item ->
-            if (item.name == cultivoActual) "✓  ${item.name}" else item.name
-        }.toTypedArray()
+        val opcionesMostradas = MockRepository.catalogoEcoCrop.map { if (it.name == cultivoActual) "✓  ${it.name}" else it.name }.toTypedArray()
 
         val builder = AlertDialog.Builder(this)
-            .setTitle(if (indiceEditar != null) "Seleccionar Cultivo ${indiceEditar + 1}" else "Añadir cultivo EcoCrop")
+            .setTitle(if (indiceEditar != null) "Seleccionar Cultivo ${indiceEditar + 1}" else "Añadir cultivo")
             .setItems(opcionesMostradas) { _, which ->
                 val elegido = MockRepository.catalogoEcoCrop[which].name
-                if (indiceEditar != null) {
-                    MockRepository.cultivosSeleccionados[indiceEditar] = elegido
-                } else {
-                    MockRepository.cultivosSeleccionados.add(elegido)
-                }
+                if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] = elegido
+                else MockRepository.cultivosSeleccionados.add(elegido)
                 renderizarSelectoresCultivos()
             }
             .setNegativeButton("Cancelar", null)
 
-        // Botón de acción separado en el pie del diálogo
         if (indiceEditar != null && MockRepository.cultivosSeleccionados.size > 2) {
             builder.setNeutralButton("Quitar cultivo") { _, _ ->
                 val eliminado = MockRepository.cultivosSeleccionados.removeAt(indiceEditar)
                 renderizarSelectoresCultivos()
-                Toast.makeText(this, "Se quitó $eliminado de la rotación", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Se quitó $eliminado", Toast.LENGTH_SHORT).show()
             }
         }
 
         val dialog = builder.create()
         dialog.show()
-
-        // Colores sobrios de la paleta TERRA para los botones del diálogo
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.parseColor("#7A766E"))
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(Color.parseColor("#B83B2A"))
     }
 
     private fun configurarBotones() {
-        findViewById<MaterialCardView>(R.id.btnAnadirCultivo).setOnClickListener {
-            mostrarSelectorEcoCrop(null)
-        }
-
-        findViewById<MaterialCardView>(R.id.btnActualizarNasa).setOnClickListener {
-            guardarYEnviarPeticion()
-        }
+        findViewById<MaterialCardView>(R.id.btnAnadirCultivo).setOnClickListener { mostrarSelectorEcoCrop(null) }
+        btnActualizarNasa.setOnClickListener { guardarYEnviarPeticion() }
     }
 
     private fun configurarChipsPrioridades() {
         val chipAgua = findViewById<MaterialCardView>(R.id.chipAgua)
         val tvChipAgua = findViewById<TextView>(R.id.tvChipAgua)
-
         val chipEconomia = findViewById<MaterialCardView>(R.id.chipEconomia)
         val tvChipEconomia = findViewById<TextView>(R.id.tvChipEconomia)
-
         val chipEquipos = findViewById<MaterialCardView>(R.id.chipEquipos)
         val tvChipEquipos = findViewById<TextView>(R.id.tvChipEquipos)
 
         fun actualizarVistaChips() {
-            aplicarEstiloChip(
-                chipAgua, tvChipAgua, "Ahorrar agua",
-                MockRepository.prioridadesSeleccionadas.contains("agua")
-            )
-            aplicarEstiloChip(
-                chipEconomia, tvChipEconomia, "Economía",
-                MockRepository.prioridadesSeleccionadas.contains("economia")
-            )
-            aplicarEstiloChip(
-                chipEquipos, tvChipEquipos, "Equipos",
-                MockRepository.prioridadesSeleccionadas.contains("equipos")
-            )
+            aplicarEstiloChip(chipAgua, tvChipAgua, "Ahorrar agua", MockRepository.prioridadesSeleccionadas.contains("agua"))
+            aplicarEstiloChip(chipEconomia, tvChipEconomia, "Economía", MockRepository.prioridadesSeleccionadas.contains("economia"))
+            aplicarEstiloChip(chipEquipos, tvChipEquipos, "Equipos", MockRepository.prioridadesSeleccionadas.contains("equipos"))
         }
 
-        chipAgua.setOnClickListener {
-            alternarPrioridad("agua")
-            actualizarVistaChips()
-        }
-        chipEconomia.setOnClickListener {
-            alternarPrioridad("economia")
-            actualizarVistaChips()
-        }
-        chipEquipos.setOnClickListener {
-            alternarPrioridad("equipos")
-            actualizarVistaChips()
-        }
+        chipAgua.setOnClickListener { alternarPrioridad("agua"); actualizarVistaChips() }
+        chipEconomia.setOnClickListener { alternarPrioridad("economia"); actualizarVistaChips() }
+        chipEquipos.setOnClickListener { alternarPrioridad("equipos"); actualizarVistaChips() }
 
         actualizarVistaChips()
     }
 
     private fun alternarPrioridad(clave: String) {
         if (MockRepository.prioridadesSeleccionadas.contains(clave)) {
-            if (MockRepository.prioridadesSeleccionadas.size > 1) {
-                MockRepository.prioridadesSeleccionadas.remove(clave)
-            }
+            if (MockRepository.prioridadesSeleccionadas.size > 1) MockRepository.prioridadesSeleccionadas.remove(clave)
         } else {
             MockRepository.prioridadesSeleccionadas.add(clave)
         }
     }
 
-    private fun aplicarEstiloChip(
-        card: MaterialCardView,
-        tv: TextView,
-        textoBase: String,
-        seleccionado: Boolean
-    ) {
+    private fun aplicarEstiloChip(card: MaterialCardView, tv: TextView, textoBase: String, seleccionado: Boolean) {
         val densidad = resources.displayMetrics.density
         if (seleccionado) {
             card.setCardBackgroundColor(Color.parseColor("#141413"))
@@ -244,45 +204,98 @@ class MiFincaActivity : AppCompatActivity() {
     }
 
     private fun guardarYEnviarPeticion() {
-        val ubicacion = etUbicacion.text.toString().trim().ifEmpty { "Tunja, Boyacá" }
-        val hectareas = etHectareas.text.toString().toIntOrNull() ?: 12
+        val ubicacion = etUbicacion.text.toString().trim().ifEmpty { "Piedecuesta, Santander" }
+        val hectareasNum = etHectareas.text.toString().toDoubleOrNull()
 
-        MockRepository.ubicacionFinca = ubicacion
-        MockRepository.hectareasFinca = hectareas
-
-        // Construcción exacta del contrato peticion.json
-        val codigosRotacion = MockRepository.cultivosSeleccionados.map { nombre ->
-            MockRepository.catalogoEcoCrop.find { it.name == nombre }?.id ?: nombre.lowercase()
+        if (hectareasNum == null || hectareasNum <= 0) {
+            etHectareas.error = "Ingresa una superficie válida"
+            return
         }
 
-        val peticion = PeticionAnalisis(
-            lat = MockRepository.latFinca,
-            lon = MockRepository.lonFinca,
-            rotacion = codigosRotacion,
-            prioridades = MockRepository.prioridadesSeleccionadas.toList()
-        )
+        val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
+        val usuarioId = prefs.getInt("user_id", -1)
 
-        // TODO: descomentar llamada POST "api/v1/analisis" enviando "peticion" cuando el backend este desplegado
-        // val respuestaServidor = ApiClient.enviarAnalisis(peticion)
-
-        val mensajeToast = if (MockRepository.cultivosSeleccionados != cultivosOriginales) {
-            "Análisis actualizado: ${MockRepository.cultivosSeleccionados.joinToString(" → ")}"
-        } else {
-            "Configuración de la finca actualizada"
+        if (usuarioId == -1) {
+            Toast.makeText(this, "Error: Inicia sesión nuevamente.", Toast.LENGTH_LONG).show()
+            return
         }
 
-        Toast.makeText(this, mensajeToast, Toast.LENGTH_SHORT).show()
+        val todosLosCultivos = MockRepository.cultivosSeleccionados.toList()
+        btnActualizarNasa.isEnabled = false
 
-        // Regresa a Inicio reflejando los datos actualizados
-        finish()
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                // 1. PATCH: Actualizar Info Usuario
+                val peticionUser = UpdateUserRequest(usuarioId, ubicacion, hectareasNum, todosLosCultivos)
+                val respuestaUser = RetrofitClient.apiService.updateUser(peticionUser)
+
+                if (respuestaUser.isSuccessful && respuestaUser.body() != null) {
+                    val datosServidor = respuestaUser.body()!!
+                    MockRepository.ubicacionFinca = datosServidor.usuario.ubicacion
+                    MockRepository.hectareasFinca = datosServidor.usuario.hectareas.toInt()
+
+                    prefs.edit()
+                        .putString("user_ubicacion", datosServidor.usuario.ubicacion)
+                        .putString("user_hectareas", datosServidor.usuario.hectareas.toString())
+                        .putString("user_cultivos", todosLosCultivos.joinToString("||"))
+                        .apply()
+
+                    // 2. POST: Pedir Análisis NASA con nombres normalizados y usuario_id
+                    val prioridadesValidas = MockRepository.prioridadesSeleccionadas.toList().ifEmpty { listOf("agua", "economia", "suelo", "equipos") }
+
+                    val cultivosNormalizados = todosLosCultivos.map { cultivo ->
+                        cultivo.lowercase()
+                            .replace("á", "a")
+                            .replace("é", "e")
+                            .replace("í", "i")
+                            .replace("ó", "o")
+                            .replace("ú", "u")
+                    }
+
+                    val peticionAnalisis = PeticionAnalisis(
+                        usuario_id = usuarioId,
+                        lat = 4.60,
+                        lon = -74.08,
+                        rotacion = cultivosNormalizados,
+                        prioridades = prioridadesValidas
+                    )
+                    val respuestaAnalisis = RetrofitClient.apiService.analizarRotacion(peticionAnalisis)
+
+                    withContext(Dispatchers.Main) {
+                        btnActualizarNasa.isEnabled = true
+                        if (respuestaAnalisis.isSuccessful && respuestaAnalisis.body() != null) {
+
+                            // GUARDAMOS EL RESULTADO PARA QUE LO LEA LA SIGUIENTE PANTALLA
+                            MockRepository.ultimoAnalisisNasa = respuestaAnalisis.body()
+
+                            Toast.makeText(this@MiFincaActivity, "Análisis de NASA completado", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@MiFincaActivity, RotacionesActivity::class.java))
+                            finish()
+                        } else {
+                            val errorServidor = respuestaAnalisis.errorBody()?.string() ?: "Desconocido"
+                            Toast.makeText(this@MiFincaActivity, "Error análisis (${respuestaAnalisis.code()}): $errorServidor", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        btnActualizarNasa.isEnabled = true
+                        Toast.makeText(this@MiFincaActivity, "Error al actualizar perfil: ${respuestaUser.code()}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    btnActualizarNasa.isEnabled = true
+                    Toast.makeText(this@MiFincaActivity, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     private fun configurarNavegacion() {
-        findViewById<LinearLayout>(R.id.navInicio).setOnClickListener {
-            finish()
-        }
+        findViewById<LinearLayout>(R.id.navInicio).setOnClickListener { finish() }
         findViewById<LinearLayout>(R.id.navRotaciones).setOnClickListener {
             startActivity(Intent(this, RotacionesActivity::class.java))
+            finish()
         }
     }
 }
