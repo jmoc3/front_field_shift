@@ -72,10 +72,11 @@ data class AporteData(
     val suelo: SueloData
 )
 
+// rotacion y cambio_pct llegan null si EcoCrop no tiene la demanda de agua de algún cultivo
 data class AguaData(
     val referencia: Int,
-    val rotacion: Int,
-    val cambio_pct: Int
+    val rotacion: Int?,
+    val cambio_pct: Int?
 )
 
 data class SueloData(
@@ -106,6 +107,24 @@ data class UsuarioData(
     val ubicacion: String,
     val hectareas: Double,
     val rotacion_actual: String?
+)
+
+// GET api/v1/user: datos del usuario con sus rotaciones activas
+data class UsuarioDetalle(
+    val id: Int,
+    val nombre: String,
+    val ubicacion: String,
+    val hectareas: Double,
+    val rotaciones: List<RotacionGuardada>
+)
+
+data class RotacionGuardada(
+    val rotacion: String,
+    val data: DatosRotacionGuardada?
+)
+
+data class DatosRotacionGuardada(
+    val actual: Boolean?
 )
 
 // ==========================================

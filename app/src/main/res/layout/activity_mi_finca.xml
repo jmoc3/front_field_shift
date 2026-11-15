@@ -324,7 +324,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:lineSpacingExtra="2dp"
-                        android:text="Combinamos tus prioridades con humedad del suelo y clima de SMAP y NASA POWER."
+                        android:text="Combinamos tus prioridades con humedad del suelo y clima de NASA POWER."
                         android:textColor="#7A766E"
                         android:textSize="12sp" />
                 </LinearLayout>

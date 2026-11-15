@@ -151,7 +151,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="Parcelas"
+                                    android:id="@+id/tvParcelasLabel"
+                                    android:text="Hectáreas"
                                     android:textColor="#171715"
                                     android:textSize="12sp" />
 
@@ -243,7 +244,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:text="Lluvia prevista"
+                                    android:text="Lluvia 7 días"
                                     android:textColor="#171715"
                                     android:textSize="12sp" />
 
@@ -367,6 +368,7 @@
 
             <!-- Item 1: Rotación guardada -->
             <LinearLayout
+                android:id="@+id/filaActividad1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
@@ -385,6 +387,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
+                        android:id="@+id/ivActividad1"
                         android:src="@drawable/ic_chart"
                         app:tint="#171715" />
                 </com.google.android.material.card.MaterialCardView>
@@ -398,6 +401,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/tvActividadTitulo1"
                         android:text="Rotación guardada"
                         android:textColor="#171715"
                         android:textSize="14sp"
@@ -416,6 +420,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
+                        android:id="@+id/tvActividadFecha1"
                         android:text="Hace 2 h"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />
@@ -424,6 +429,7 @@
 
             <!-- Item 2: Nueva previsión de lluvia -->
             <LinearLayout
+                android:id="@+id/filaActividad2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
@@ -442,6 +448,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
+                        android:id="@+id/ivActividad2"
                         android:src="@drawable/ic_cloud_rain"
                         app:tint="#171715" />
                 </com.google.android.material.card.MaterialCardView>
@@ -455,6 +462,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/tvActividadTitulo2"
                         android:text="Nueva previsión de lluvia"
                         android:textColor="#171715"
                         android:textSize="14sp"
@@ -473,6 +481,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
+                        android:id="@+id/tvActividadFecha2"
                         android:text="Hace 4 h"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />
@@ -481,6 +490,7 @@
 
             <!-- Item 3: Análisis de suelo añadido -->
             <LinearLayout
+                android:id="@+id/filaActividad3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="22dp"
@@ -499,6 +509,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
+                        android:id="@+id/ivActividad3"
                         android:src="@drawable/ic_check"
                         app:tint="#171715" />
                 </com.google.android.material.card.MaterialCardView>
@@ -512,6 +523,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/tvActividadTitulo3"
                         android:text="Análisis de suelo añadido"
                         android:textColor="#171715"
                         android:textSize="14sp"
@@ -530,6 +542,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
+                        android:id="@+id/tvActividadFecha3"
                         android:text="Ayer"
                         android:textColor="#7A766E"
                         android:textSize="11sp" />

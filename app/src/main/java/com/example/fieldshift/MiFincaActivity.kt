@@ -45,7 +45,7 @@ class MiFincaActivity : AppCompatActivity() {
         btnActualizarNasa = findViewById(R.id.btnActualizarNasa)
 
         etUbicacion.setText(MockRepository.ubicacionFinca)
-        etHectareas.setText(MockRepository.hectareasFinca.toString())
+        etHectareas.setText(formatearNumero(MockRepository.hectareasFinca))
 
         cultivosOriginales = MockRepository.cultivosSeleccionados.toList()
 
@@ -113,6 +113,7 @@ class MiFincaActivity : AppCompatActivity() {
             card.setOnLongClickListener {
                 if (MockRepository.cultivosSeleccionados.size > 2) {
                     val eliminado = MockRepository.cultivosSeleccionados.removeAt(index)
+                    descartarAnalisis()
                     renderizarSelectoresCultivos()
                     Toast.makeText(this, "Se quitó $eliminado", Toast.LENGTH_SHORT).show()
                 } else {
@@ -126,6 +127,18 @@ class MiFincaActivity : AppCompatActivity() {
     }
 
     private fun mostrarSelectorEcoCrop(indiceEditar: Int?) {
+        // El catálogo viene de GET api/v1/cultivos; si aún no está, se pide antes de abrir el selector
+        if (MockRepository.catalogoEcoCrop.isEmpty()) {
+            lifecycleScope.launch {
+                if (withContext(Dispatchers.IO) { MockRepository.cargarCatalogo() }) {
+                    mostrarSelectorEcoCrop(indiceEditar)
+                } else {
+                    Toast.makeText(this@MiFincaActivity, "No se pudo cargar el catálogo de cultivos", Toast.LENGTH_SHORT).show()
+                }
+            }
+            return
+        }
+
         val cultivoActual = if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] else null
         val opcionesMostradas = MockRepository.catalogoEcoCrop.map { if (it.name == cultivoActual) "✓  ${it.name}" else it.name }.toTypedArray()
 
@@ -135,6 +148,7 @@ class MiFincaActivity : AppCompatActivity() {
                 val elegido = MockRepository.catalogoEcoCrop[which].name
                 if (indiceEditar != null) MockRepository.cultivosSeleccionados[indiceEditar] = elegido
                 else MockRepository.cultivosSeleccionados.add(elegido)
+                descartarAnalisis()
                 renderizarSelectoresCultivos()
             }
             .setNegativeButton("Cancelar", null)
@@ -142,6 +156,7 @@ class MiFincaActivity : AppCompatActivity() {
         if (indiceEditar != null && MockRepository.cultivosSeleccionados.size > 2) {
             builder.setNeutralButton("Quitar cultivo") { _, _ ->
                 val eliminado = MockRepository.cultivosSeleccionados.removeAt(indiceEditar)
+                descartarAnalisis()
                 renderizarSelectoresCultivos()
                 Toast.makeText(this, "Se quitó $eliminado", Toast.LENGTH_SHORT).show()
             }
@@ -185,6 +200,12 @@ class MiFincaActivity : AppCompatActivity() {
         } else {
             MockRepository.prioridadesSeleccionadas.add(clave)
         }
+        descartarAnalisis()
+    }
+
+    /** Cambiaron prioridades o cultivos: Rotaciones debe pedir un análisis nuevo. */
+    private fun descartarAnalisis() {
+        MockRepository.ultimoAnalisisNasa = null
     }
 
     private fun aplicarEstiloChip(card: MaterialCardView, tv: TextView, textoBase: String, seleccionado: Boolean) {
@@ -225,39 +246,32 @@ class MiFincaActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // 1. PATCH: Actualizar Info Usuario
-                val peticionUser = UpdateUserRequest(usuarioId, ubicacion, hectareasNum, todosLosCultivos)
+                // 1. PATCH: Actualizar Info Usuario (los cultivos viajan como ids del catálogo)
+                val idsCultivos = MockRepository.idsCultivosSeleccionados()
+                val peticionUser = UpdateUserRequest(usuarioId, ubicacion, hectareasNum, idsCultivos)
                 val respuestaUser = RetrofitClient.apiService.updateUser(peticionUser)
 
                 if (respuestaUser.isSuccessful && respuestaUser.body() != null) {
                     val datosServidor = respuestaUser.body()!!
                     MockRepository.ubicacionFinca = datosServidor.usuario.ubicacion
-                    MockRepository.hectareasFinca = datosServidor.usuario.hectareas.toInt()
+                    MockRepository.hectareasFinca = datosServidor.usuario.hectareas
 
                     prefs.edit()
                         .putString("user_ubicacion", datosServidor.usuario.ubicacion)
                         .putString("user_hectareas", datosServidor.usuario.hectareas.toString())
                         .putString("user_cultivos", todosLosCultivos.joinToString("||"))
                         .apply()
+                    // Los datos cambiaron: si el análisis falla, Rotaciones lo volverá a pedir
+                    MockRepository.ultimoAnalisisNasa = null
 
-                    // 2. POST: Pedir Análisis NASA con nombres normalizados y usuario_id
-                    val prioridadesValidas = MockRepository.prioridadesSeleccionadas.toList().ifEmpty { listOf("agua", "economia", "suelo", "equipos") }
-
-                    val cultivosNormalizados = todosLosCultivos.map { cultivo ->
-                        cultivo.lowercase()
-                            .replace("á", "a")
-                            .replace("é", "e")
-                            .replace("í", "i")
-                            .replace("ó", "o")
-                            .replace("ú", "u")
-                    }
-
+                    // 2. POST: Pedir Análisis NASA con las coordenadas de la ubicación escrita
+                    MockRepository.actualizarCoordenadas(this@MiFincaActivity)
                     val peticionAnalisis = PeticionAnalisis(
                         usuario_id = usuarioId,
-                        lat = 4.60,
-                        lon = -74.08,
-                        rotacion = cultivosNormalizados,
-                        prioridades = prioridadesValidas
+                        lat = MockRepository.latFinca,
+                        lon = MockRepository.lonFinca,
+                        rotacion = idsCultivos,
+                        prioridades = MockRepository.prioridadesParaAnalisis()
                     )
                     val respuestaAnalisis = RetrofitClient.apiService.analizarRotacion(peticionAnalisis)
 

@@ -15,6 +15,16 @@ interface ApiService {
         @Body request: UpdateUserRequest
     ): Response<UpdateUserResponse>
 
+    // Datos del usuario y sus rotaciones activas (para restaurar la rotación al iniciar sesión)
+    @GET("api/v1/user")
+    suspend fun obtenerUsuario(
+        @Query("id_usuario") idUsuario: Int
+    ): Response<UsuarioDetalle>
+
+    // Catálogo de cultivos EcoCrop (única fuente para los selectores)
+    @GET("api/v1/cultivos")
+    suspend fun obtenerCultivos(): Response<List<CultivoItem>>
+
     // Endpoint para Iniciar Sesión
     @POST("api/v1/login")
     suspend fun login(

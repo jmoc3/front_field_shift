@@ -308,14 +308,37 @@
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
-                        <TextView
-                            android:id="@+id/tvDetalleBeneficio"
+                        <!-- Primer elemento visible; el resto se despliega con Ver más -->
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Aporta nitrógeno y ahorra agua."
-                            android:textColor="#171715"
-                            android:textSize="11.5sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvDetalleBeneficio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:text="Aporta nitrógeno y ahorra agua."
+                                android:textColor="#171715"
+                                android:textSize="11.5sp" />
+
+                            <TextView
+                                android:id="@+id/tvVerMasBeneficio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:paddingBottom="2dp"
+                                android:text="Ver más ↓"
+                                android:textColor="#171715"
+                                android:textSize="11.5sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <!-- Fila 3: Riesgo -->
@@ -332,14 +355,37 @@
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
-                        <TextView
-                            android:id="@+id/tvDetalleRiesgo"
+                        <!-- Primer elemento visible; el resto se despliega con Ver más -->
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Sensible a heladas. Validar fechas."
-                            android:textColor="#171715"
-                            android:textSize="11.5sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvDetalleRiesgo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:text="Sensible a heladas. Validar fechas."
+                                android:textColor="#171715"
+                                android:textSize="11.5sp" />
+
+                            <TextView
+                                android:id="@+id/tvVerMasRiesgo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:paddingBottom="2dp"
+                                android:text="Ver más ↓"
+                                android:textColor="#171715"
+                                android:textSize="11.5sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <!-- Fila 4: Evidencia NASA -->
@@ -356,14 +402,37 @@
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
-                        <TextView
-                            android:id="@+id/tvDetalleEvidencia"
+                        <!-- Primer elemento visible; el resto se despliega con Ver más -->
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="SMAP: humedad baja. POWER: seco."
-                            android:textColor="#171715"
-                            android:textSize="11.5sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvDetalleEvidencia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:text="SMAP: humedad baja. POWER: seco."
+                                android:textColor="#171715"
+                                android:textSize="11.5sp" />
+
+                            <TextView
+                                android:id="@+id/tvVerMasEvidencia"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:paddingBottom="2dp"
+                                android:text="Ver más ↓"
+                                android:textColor="#171715"
+                                android:textSize="11.5sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <!-- Fila 5: Datos faltantes -->
@@ -379,14 +448,37 @@
                             android:textColor="#7A766E"
                             android:textSize="11.5sp" />
 
-                        <TextView
-                            android:id="@+id/tvDetalleDatosFaltantes"
+                        <!-- Primer elemento visible; el resto se despliega con Ver más -->
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Falta pH del suelo local y registro de lluvias en vereda."
-                            android:textColor="#171715"
-                            android:textSize="11.5sp" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvDetalleDatosFaltantes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3dp"
+                                android:text="Falta pH del suelo local y registro de lluvias en vereda."
+                                android:textColor="#171715"
+                                android:textSize="11.5sp" />
+
+                            <TextView
+                                android:id="@+id/tvVerMasDatosFaltantes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:paddingBottom="2dp"
+                                android:text="Ver más ↓"
+                                android:textColor="#171715"
+                                android:textSize="11.5sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -440,6 +532,7 @@
                     android:textSize="11sp" />
 
                 <TextView
+                    android:id="@+id/tvAguaReferencia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -449,11 +542,20 @@
             </RelativeLayout>
 
             <!-- Barra Referencia (Línea gris base) -->
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="3.5dp"
                 android:layout_marginBottom="10dp"
-                android:background="#DCD9D0" />
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <View
+                    android:id="@+id/barraAguaReferencia"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="100"
+                    android:background="#DCD9D0" />
+            </LinearLayout>
 
             <!-- Fila Esta rotación 75 -->
             <RelativeLayout
@@ -542,6 +644,7 @@
                 android:weightSum="100">
 
                 <View
+                    android:id="@+id/barraSueloReferencia"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="45"
@@ -555,6 +658,7 @@
 
             <!-- Con leguminosa -->
             <TextView
+                android:id="@+id/tvSueloRotacionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -571,6 +675,7 @@
                 android:weightSum="100">
 
                 <View
+                    android:id="@+id/barraSueloRotacion"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="85"

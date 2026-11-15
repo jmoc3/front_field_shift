@@ -46,9 +46,8 @@ class LoginActivity : AppCompatActivity() {
     )
     private val cultivosAdicionales = mutableListOf<CultivoExtraItem>()
 
-    private val opcionesEcoCrop: List<String> by lazy {
-        listOf("Seleccionar cultivo") + MockRepository.catalogoEcoCrop.map { it.name }
-    }
+    private val opcionesEcoCrop: List<String>
+        get() = listOf("Seleccionar cultivo") + MockRepository.catalogoEcoCrop.map { it.name }
 
     private val regexSoloLetras = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s]{2,}$")
 
@@ -67,6 +66,23 @@ class LoginActivity : AppCompatActivity() {
         inicializarVistas()
         configurarSpinnersBase()
         configurarAcciones()
+        cargarCatalogoCultivos()
+    }
+
+    /** Pide GET api/v1/cultivos y rellena los selectores ya creados. */
+    private fun cargarCatalogoCultivos() {
+        lifecycleScope.launch {
+            val cargado = withContext(Dispatchers.IO) { MockRepository.cargarCatalogo() }
+            if (!cargado) {
+                Toast.makeText(this@LoginActivity, "No se pudo cargar el catálogo de cultivos", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+            (listOf(spinnerCultivo1, spinnerCultivo2) + cultivosAdicionales.map { it.spinner }).forEach { spinner ->
+                val elegido = spinner.selectedItem?.toString()
+                spinner.adapter = crearAdaptadorEcoCrop()
+                spinner.setSelection(opcionesEcoCrop.indexOf(elegido).coerceAtLeast(0))
+            }
+        }
     }
 
     private fun cargarSesionPreviaSiExiste() {
@@ -81,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
 
             // Lectura protegida con getString para evitar conflictos de tipos
             val haGuardadas = prefs.getString("user_hectareas", null)
-            haGuardadas?.toDoubleOrNull()?.toInt()?.let {
+            haGuardadas?.toDoubleOrNull()?.let {
                 MockRepository.hectareasFinca = it
             }
 
@@ -146,11 +162,33 @@ class LoginActivity : AppCompatActivity() {
                     val peticion = LoginRequest(correo = email)
                     val respuesta = RetrofitClient.apiService.login(peticion)
 
+                    // El login no trae la rotación: se lee de GET api/v1/user para no
+                    // pisarla luego con los cultivos por defecto al guardar Mi Finca
+                    val idUsuario = respuesta.body()?.usuario?.id
+                    val usuarioDetalle = if (respuesta.isSuccessful && idUsuario != null) {
+                        try {
+                            RetrofitClient.apiService.obtenerUsuario(idUsuario).body()
+                        } catch (e: Exception) {
+                            null
+                        }
+                    } else null
+
                     withContext(Dispatchers.Main) {
                         btnEntrar.isEnabled = true
                         if (respuesta.isSuccessful && respuesta.body() != null) {
                             val datosBackend = respuesta.body()!!
                             val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
+
+                            // Otra cuenta en el mismo dispositivo: se descartan sus datos locales
+                            if (prefs.getString("user_email", null) != email) {
+                                prefs.edit().clear().apply()
+                                MockRepository.ultimoAnalisisNasa = null
+                            }
+
+                            restaurarRotacion(usuarioDetalle)?.let { cultivos ->
+                                MockRepository.cultivosSeleccionados = cultivos.toMutableList()
+                                prefs.edit().putString("user_cultivos", cultivos.joinToString("||")).apply()
+                            }
 
                             val idReal = datosBackend.usuario?.id
                             if (idReal != null) {
@@ -173,14 +211,16 @@ class LoginActivity : AppCompatActivity() {
                             }
 
                             datosBackend.usuario?.hectareas?.let {
-                                MockRepository.hectareasFinca = it.toInt()
-                                prefs.edit().putString("user_hectareas", it.toInt().toString()).apply()
+                                MockRepository.hectareasFinca = it
+                                prefs.edit().putString("user_hectareas", it.toString()).apply()
                             }
 
                             Toast.makeText(this@LoginActivity, "Conectado: ${datosBackend.mensaje ?: "Éxito"}", Toast.LENGTH_SHORT).show()
                             irAMainActivity()
+                        } else if (respuesta.code() == 404) {
+                            Toast.makeText(this@LoginActivity, "El correo no está registrado", Toast.LENGTH_LONG).show()
                         } else {
-                            Toast.makeText(this@LoginActivity, "El correo no existe o error en servidor", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@LoginActivity, "Error en el servidor (${respuesta.code()})", Toast.LENGTH_LONG).show()
                         }
                     }
                 } catch (e: Exception) {
@@ -241,7 +281,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-            val hectareasInt = hectareasNum.toInt().coerceAtLeast(1)
             val todosLosCultivos = mutableListOf<String>()
             todosLosCultivos.add(spinnerCultivo1.selectedItem.toString())
             todosLosCultivos.add(spinnerCultivo2.selectedItem.toString())
@@ -256,7 +295,7 @@ class LoginActivity : AppCompatActivity() {
                         correo = email,
                         ubicacion = ubicacion,
                         hectareas = hectareasNum,
-                        rotacion = todosLosCultivos
+                        rotacion = todosLosCultivos.map { MockRepository.buscarCultivo(it)?.id ?: normalizar(it) }
                     )
                     val respuesta = RetrofitClient.apiService.registro(peticion)
 
@@ -268,11 +307,13 @@ class LoginActivity : AppCompatActivity() {
 
                             MockRepository.nombreUsuario = nombre
                             MockRepository.ubicacionFinca = ubicacion
-                            MockRepository.hectareasFinca = hectareasInt
+                            MockRepository.hectareasFinca = hectareasNum
                             MockRepository.cultivosSeleccionados.clear()
                             MockRepository.cultivosSeleccionados.addAll(todosLosCultivos)
+                            MockRepository.ultimoAnalisisNasa = null
 
                             val prefs = getSharedPreferences("TerraPrefs", Context.MODE_PRIVATE)
+                            prefs.edit().clear().apply()
 
                             val idReal = datosRegistro.usuario?.id
                             if (idReal != null) {
@@ -285,7 +326,7 @@ class LoginActivity : AppCompatActivity() {
                                 .putString("user_nombre", nombre)
                                 .putString("user_email", email)
                                 .putString("user_ubicacion", ubicacion)
-                                .putString("user_hectareas", hectareasInt.toString())
+                                .putString("user_hectareas", hectareasNum.toString())
                                 .putString("user_cultivos", todosLosCultivos.joinToString("||"))
                                 .apply()
 
@@ -402,6 +443,14 @@ class LoginActivity : AppCompatActivity() {
             val numeroReal = 3 + index
             item.tvLabel.text = "Cultivo $numeroReal"
         }
+    }
+
+    /** "Papa → Maíz → Fríjol" de la rotación actual guardada en el backend -> lista de nombres. */
+    private fun restaurarRotacion(usuario: UsuarioDetalle?): List<String>? {
+        val rotaciones = usuario?.rotaciones ?: return null
+        val actual = rotaciones.find { it.data?.actual == true } ?: rotaciones.firstOrNull() ?: return null
+        val cultivos = actual.rotacion.split("→").map { it.trim() }.filter { it.isNotEmpty() }
+        return cultivos.takeIf { it.size >= 2 }
     }
 
     private fun irAMainActivity() {
